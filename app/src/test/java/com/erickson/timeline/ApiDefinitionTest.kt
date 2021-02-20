@@ -1,8 +1,8 @@
 package com.erickson.timeline
 
-import com.erickson.timeline.Smithsonian.Companion.ImageType
-import com.erickson.timeline.Smithsonian.Companion.SearchData.ContentBody.Record.OnlineMediaBody.Media
-import com.squareup.picasso.Picasso
+import com.erickson.timeline.smithsonian.Smithsonian
+import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
+import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.Record.OnlineMediaBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Assert.assertNotNull
@@ -40,12 +40,12 @@ class ApiDefinitionTest {
 
     @Test
     fun testCanGetAnActualImage() {
-        val media: Media? = smith.getIds(Smithsonian.apiKey, Smithsonian.query).execute().body()?.run {
+        val media: OnlineMediaBody.Media? = smith.getIds(Smithsonian.apiKey, Smithsonian.query).execute().body()?.run {
             this.response.rows[0].content.descriptiveNonRepeating.online_media.media[0]
         }
 
-        val imageUrl: String = media?.resources?.find {resource: Media.Resource ->
-                resource.label == ImageType.THUMBNAIL.type
+        val imageUrl: String = media?.resources?.find {resource: OnlineMediaBody.Media.Resource ->
+                resource.label == RequestDefinitions.ImageType.THUMBNAIL.type
         }?.url ?: ""
 
         val imageRequest = Request.Builder()
