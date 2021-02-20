@@ -10,12 +10,13 @@
         android:id="@+id/selection_one"
         android:layout_width="@dimen/selection_dim"
         android:layout_height="@dimen/selection_dim"
+        android:contentDescription="TODO"
+        android:elevation="100dp"
         app:layout_constraintBottom_toTopOf="@+id/selection_two"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="TODO" />
+        tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/selection_two"
@@ -46,38 +47,38 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/previewImage6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/bottomTime"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/previewImage5"
             tools:layout_editor_absoluteX="0dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/previewImage3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            app:layout_constraintBottom_toTopOf="@+id/previewImage4"
             app:layout_constraintTop_toBottomOf="@+id/topTime"
             tools:layout_editor_absoluteX="0dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/previewImage4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/imageView5"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:layout_constraintBottom_toTopOf="@+id/previewImage5"
+            app:layout_constraintTop_toBottomOf="@+id/previewImage3"
             tools:layout_editor_absoluteX="0dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/previewImage5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintBottom_toTopOf="@+id/previewImage6"
+            app:layout_constraintTop_toBottomOf="@+id/previewImage4"
             tools:layout_editor_absoluteX="0dp"
             tools:srcCompat="@tools:sample/avatars" />
 
