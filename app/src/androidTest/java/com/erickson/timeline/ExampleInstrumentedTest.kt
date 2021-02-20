@@ -7,6 +7,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import java.util.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,5 +21,18 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.erickson.timeline", appContext.packageName)
+    }
+
+    @Test
+    fun testParseDate() {
+        val dateString = "2000s"
+
+        val date: Date = DataViewModel.parseDate(dateString)
+        val expectedDate = Calendar.getInstance().run {
+            set(2000, 0, 1,0,0,0)
+            time
+        }
+
+        assertEquals(expectedDate.toString(), date.toString())
     }
 }

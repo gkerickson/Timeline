@@ -4,12 +4,12 @@ object RequestDefinitions {
 
     interface ResponseType
 
-    data class Body<T: ResponseType>(
+    data class Body<T : ResponseType>(
         val status: Int,
         val responseCode: Int,
         val response: Response<T>
-    ){
-        data class Response<T: ResponseType>(
+    ) {
+        data class Response<T : ResponseType>(
             val rows: List<T>
         )
     }
@@ -18,23 +18,43 @@ object RequestDefinitions {
         val id: String,
         val title: String,
         val content: ContentBody
-    ): ResponseType {
-        data class ContentBody(val descriptiveNonRepeating: Record) {
+    ) : ResponseType {
+        data class ContentBody(
+            val descriptiveNonRepeating: Record,
+            val indexedStructured: Structured,
+            val freeText: FreeText
+        ) {
             data class Record(
                 val id: String,
                 val online_media: OnlineMediaBody
-            ){
+            ) {
                 data class OnlineMediaBody(val media: List<Media>) {
                     data class Media(
                         val guid: String,
                         val resources: List<Resource>
-                    ){
+                    ) {
                         data class Resource(
                             val label: String,
                             val url: String
                         )
                     }
                 }
+            }
+            data class Structured(
+                val date: List<String>,
+                val object_type: List<String>,
+                val name: List<String>,
+                val topic: List<String>,
+                val online_media_type: List<String>
+            )
+
+            data class FreeText(
+                val notes: List<Note>
+            ) {
+                data class Note(
+                    val label: String,
+                    val content: String
+                )
             }
         }
     }
