@@ -1,12 +1,10 @@
-package com.erickson.timeline
+package com.erickson.timeline.model
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.erickson.timeline.TestHelpers.mockDateAsDate
 import com.erickson.timeline.TestHelpers.mockNote
 import com.erickson.timeline.TestHelpers.mockResource
 import com.erickson.timeline.TestHelpers.mockSearchData
-import com.erickson.timeline.model.DataViewModel
-import com.erickson.timeline.model.SmithsonianLiveData
 import com.erickson.timeline.smithsonian.RequestHandler
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
 import com.nhaarman.mockitokotlin2.any

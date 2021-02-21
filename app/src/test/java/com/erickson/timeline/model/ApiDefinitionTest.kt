@@ -1,4 +1,4 @@
-package com.erickson.timeline
+package com.erickson.timeline.model
 
 import com.erickson.timeline.smithsonian.RequestConstants.apiKey
 import com.erickson.timeline.smithsonian.RequestConstants.query

@@ -1,9 +1,8 @@
-package com.erickson.timeline
+package com.erickson.timeline.model
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.erickson.timeline.model.ActiveViewLiveData
-import com.erickson.timeline.model.DataViewModel
+import com.erickson.timeline.TestHelpers
 import com.erickson.timeline.smithsonian.RequestHandler
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
