@@ -13,7 +13,7 @@ object RequestDefinitions {
         )
     }
 
-    data class SearchData(
+    class SearchData(
         val id: String,
         val title: String,
         val content: ContentBody

@@ -1,19 +1,13 @@
 package com.erickson.timeline
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import com.erickson.timeline.smithsonian.RequestHandlerImpl.parseDate
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 import java.util.*
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     @Test
@@ -27,9 +21,9 @@ class ExampleInstrumentedTest {
     fun testParseDate() {
         val dateString = "2000s"
 
-        val date: Date = DataViewModel.parseDate(dateString)
+        val date: Date = parseDate(dateString)
         val expectedDate = Calendar.getInstance().run {
-            set(2000, 0, 1,0,0,0)
+            set(2000, 0, 1, 0, 0, 0)
             time
         }
 
