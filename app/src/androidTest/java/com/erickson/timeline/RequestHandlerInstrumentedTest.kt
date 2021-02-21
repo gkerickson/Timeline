@@ -17,14 +17,11 @@ class RequestHandlerInstrumentedTest {
     @Test
     fun testParseDate() {
         val dateString = "2000s"
+        val expectedDate = "Sat Jan 01 00:00:00 CST 2000"
 
-        val date: Date = parseDate(dateString)
-        val expectedDate = Calendar.getInstance().run {
-            set(2000, 0, 1, 0, 0, 0)
-            time
-        }
+        val date: Date = parseDate(dateString) ?: Date()
 
-        assertEquals(expectedDate.toString(), date.toString())
+        assertEquals(expectedDate, date.toString())
     }
 
     @Test

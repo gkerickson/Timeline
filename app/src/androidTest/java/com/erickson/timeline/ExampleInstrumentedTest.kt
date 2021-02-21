@@ -21,7 +21,7 @@ class ExampleInstrumentedTest {
     fun testParseDate() {
         val dateString = "2000s"
 
-        val date: Date = parseDate(dateString)
+        val date: Date = parseDate(dateString) ?: Date()
         val expectedDate = Calendar.getInstance().run {
             set(2000, 0, 1, 0, 0, 0)
             time

@@ -1,7 +1,6 @@
 package com.erickson.timeline.smithsonian
 
 import android.annotation.SuppressLint
-import android.icu.text.SimpleDateFormat
 import com.erickson.timeline.model.DataViewModel
 import com.erickson.timeline.smithsonian.RequestConstants.apiKey
 import com.erickson.timeline.smithsonian.RequestConstants.query
@@ -13,6 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.*
 
 object RequestHandlerImpl: RequestHandler {
@@ -28,8 +28,8 @@ object RequestHandlerImpl: RequestHandler {
             .build().create(Smithsonian::class.java)
     }
 
-    @SuppressLint("NewApi", "SimpleDateFormat")
-    fun parseDate(date: String): Date {
+    @SuppressLint("SimpleDateFormat")
+    fun parseDate(date: String): Date? {
         var toParse = date
         if (date[date.length - 1] == 's') toParse = date.substring(0, date.length - 1)
         return SimpleDateFormat("yyyy").parse(toParse)
@@ -48,7 +48,7 @@ object RequestHandlerImpl: RequestHandler {
                     media.resources?.find { resource ->
                         resource.label == RequestDefinitions.ImageType.THUMBNAIL.type
                     }?.url?.run {
-                        DataViewModel.ViewData(response.id, this, date ?: Date(), notes)
+                        date?.let { DataViewModel.ViewData(response.id, this, it, notes) }
                     }
                 }.run {
                     if (isEmpty()) null
