@@ -1,7 +1,9 @@
 package com.erickson.timeline
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.icu.text.SimpleDateFormat
-import android.widget.ImageView
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +11,14 @@ import com.erickson.timeline.smithsonian.Smithsonian
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.FreeText.Note
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 import java.util.*
 
 class DataViewModel: ViewModel() {
@@ -30,8 +34,8 @@ class DataViewModel: ViewModel() {
                 response.content.run {
                     val date = parseDate(this.indexedStructured.date[0])
                     val notes: MutableList<Note> = mutableListOf()
-                    freeText?.name?.let { notes.addAll(it) }
-                    freeText?.notes?.let { notes.addAll(it) }
+                    freeText.name?.let { notes.addAll(it) }
+                    freeText.notes?.let { notes.addAll(it) }
 
                     descriptiveNonRepeating.online_media.media.mapNotNull { media ->
                         media.resources?.find { resource ->
@@ -64,7 +68,7 @@ class DataViewModel: ViewModel() {
         val id: String,
         val imageUrl: String,
         val date: Date,
-        val notes: List<Note>
+        val notes: List<Note>,
     )
 
     var lastViewDataPress: Int = -1
@@ -87,7 +91,7 @@ class DataViewModel: ViewModel() {
                             response: Response<RequestDefinitions.Body<RequestDefinitions.SearchData>>
                         ) {
                             response.body()?.let {
-                                value = DataViewModel.processSearchDataResponseBody(it)
+                                value = processSearchDataResponseBody(it)
                             }
                         }
                     })
@@ -96,21 +100,40 @@ class DataViewModel: ViewModel() {
         }
     }
 
-    val activeViewData = object: MediatorLiveData<List<ViewData>>() {
+    data class ActiveViewData(
+        val viewDataIndex: Int,
+        val imageTarget: Target
+    )
+
+    class ImageTarget: Target {
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            TODO("Not yet implemented")
+        }
+
+    }
+
+    val activeViewData = object: MediatorLiveData<List<ActiveViewData>>() {
         override fun onActive() {
             if(this.value == null) {
-                addSource(allViewData) {
+                addSource(allViewData) { list ->
+                    var index = 0
                     list.subList(0, 4).sortedBy { viewData ->
                         viewData.date
-                    }.apply {
-                        Picasso.get().load(this[0].imageUrl)
-                            .into(findViewById<ImageView>(R.id.previewImage3))
-                        Picasso.get().load(this[1].imageUrl)
-                            .into(findViewById<ImageView>(R.id.previewImage4))
-                        Picasso.get().load(this[2].imageUrl)
-                            .into(findViewById<ImageView>(R.id.previewImage5))
-                        Picasso.get().load(this[3].imageUrl)
-                            .into(findViewById<ImageView>(R.id.previewImage6))
+                    }.map { viewData ->
+                        ActiveViewData(viewData, ImageTarget().also {
+                            Picasso.get().load(viewData.imageUrl).into(it)
+                        })
+                        Picasso.get().load(subList[1].imageUrl).into(this)
+                        Picasso.get().load(subList[2].imageUrl).into(this)
+                        Picasso.get().load(subList[3].imageUrl).into(this)
                     }
                 }
             }

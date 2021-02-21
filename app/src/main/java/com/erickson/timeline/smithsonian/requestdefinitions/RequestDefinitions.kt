@@ -30,7 +30,7 @@ object RequestDefinitions {
                 data class OnlineMediaBody(val media: List<Media>) {
                     data class Media(
                         val guid: String,
-                        val resources: List<Resource>
+                        val resources: List<Resource>?
                     ) {
                         data class Resource(
                             val label: String,
