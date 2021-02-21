@@ -6,6 +6,8 @@ import com.erickson.timeline.smithsonian.RequestConstants.apiKey
 import com.erickson.timeline.smithsonian.RequestConstants.query
 import com.erickson.timeline.smithsonian.RequestConstants.url
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,4 +84,9 @@ object RequestHandlerImpl: RequestHandler {
     override fun getData(callback: DataRequestCallback) {
         smith.getIds(apiKey, query).enqueue(callback.retrofitCallbackHandler)
     }
+
+    override fun loadImage(url: String, target: Target) {
+        Picasso.get().load(url).into(target)
+    }
+
 }

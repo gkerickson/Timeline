@@ -8,6 +8,7 @@ import com.erickson.timeline.smithsonian.RequestHandlerImpl
 import com.erickson.timeline.smithsonian.Smithsonian
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.FreeText.Note
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Request
 import com.squareup.picasso.Target
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -41,29 +42,8 @@ class DataViewModel : ViewModel() {
     )
 
     val allViewData = SmithsonianLiveData(RequestHandlerImpl)
-    val timelineViewData = ActiveViewLiveData(allViewData)
+    val timelineViewData = ActiveViewLiveData(allViewData, RequestHandlerImpl)
     var selectedId: String = ""
 
-    class ImageTarget(private val callback: NotifyObserversCallback) : Target {
-        var image: Bitmap? = null
-            private set
-
-        interface NotifyObserversCallback {
-            fun notifyObservers()
-        }
-
-        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            callback.notifyObservers()
-            image = bitmap
-        }
-
-        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-            TODO("Not yet implemented")
-        }
-    }
 
 }

@@ -16,6 +16,14 @@ object TestHelpers {
     )
 
     val mockDate: String = "2000s"
+
+    fun mockDateFromYear(year: Int): Date {
+        return Calendar.getInstance().run {
+            set(year, 0, 1, 0, 0, 0)
+            time
+        }
+    }
+
     val mockDateAsDate = Calendar.getInstance().run {
         set(2000, 0, 1, 0, 0, 0)
         time
