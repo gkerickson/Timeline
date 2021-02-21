@@ -1,7 +1,6 @@
 package com.erickson.timeline.smithsonian.requestdefinitions
 
 object RequestDefinitions {
-
     interface ResponseType
 
     data class Body<T : ResponseType>(
@@ -49,7 +48,8 @@ object RequestDefinitions {
             )
 
             data class FreeText(
-                val notes: List<Note>
+                val notes: List<Note>?,
+                val name: List<Note>?
             ) {
                 data class Note(
                     val label: String,
@@ -58,30 +58,29 @@ object RequestDefinitions {
             }
         }
     }
-
     enum class ImageType(val type: String) {
         TIFF("High-resolution TIFF"),
         JPEG("High-resolution JPEG (3000x3000)"),
         SCREEN("Screen Image"),
         THUMBNAIL("Thumbnail Image")
     }
-
-    interface Art {
-        val id: String
-    }
-
-    enum class Category(val category: String) {
-        CULTURE("culture"),
-        DATA_SOURCE("data_source"),
-        DATE("date"),
-        OBJECT_TYPE("object_type"),
-        ONLINE_MEDIA_TYPE("online_media_type"),
-        PLACE("place"),
-        TOPIC("topic"),
-        UNIT_CODE("unit_code"),
-    }
-
-    enum class Terms(val term: String) {
-        IMAGES("Images")
-    }
+//
+//    interface Art {
+//        val id: String
+//    }
+//
+//    enum class Category(val category: String) {
+//        CULTURE("culture"),
+//        DATA_SOURCE("data_source"),
+//        DATE("date"),
+//        OBJECT_TYPE("object_type"),
+//        ONLINE_MEDIA_TYPE("online_media_type"),
+//        PLACE("place"),
+//        TOPIC("topic"),
+//        UNIT_CODE("unit_code"),
+//    }
+//
+//    enum class Terms(val term: String) {
+//        IMAGES("Images")
+//    }
 }

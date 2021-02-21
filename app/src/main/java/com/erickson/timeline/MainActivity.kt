@@ -10,23 +10,46 @@ import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 
+    private fun onImageClick(listIndex: Int) {
+        this.supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .add(R.id.fragment, DetailViewFragment())
+            .commit()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val firstImage = this.findViewById<ImageView>(R.id.selection_one)
-        val secImage = this.findViewById<ImageView>(R.id.selection_two)
+
         val viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
-        viewModel.potentialImages.observe(this) {
-            it.subList(0, 6).sortedBy { viewData ->
+        viewModel.allViewData.observe(this) { list ->
+            list.subList(0, 4).sortedBy { viewData ->
                 viewData.date
             }.apply {
-                Picasso.get().load(this[0].imageUrl).into(firstImage)
-                Picasso.get().load(this[1].imageUrl).into(secImage)
-                Picasso.get().load(this[2].imageUrl).into(findViewById<ImageView>(R.id.previewImage3))
-                Picasso.get().load(this[3].imageUrl).into(findViewById<ImageView>(R.id.previewImage4))
-                Picasso.get().load(this[4].imageUrl).into(findViewById<ImageView>(R.id.previewImage5))
-                Picasso.get().load(this[5].imageUrl).into(findViewById<ImageView>(R.id.previewImage6))
+                Picasso.get().load(this[0].imageUrl)
+                    .into(findViewById<ImageView>(R.id.previewImage3))
+                Picasso.get().load(this[1].imageUrl)
+                    .into(findViewById<ImageView>(R.id.previewImage4))
+                Picasso.get().load(this[2].imageUrl)
+                    .into(findViewById<ImageView>(R.id.previewImage5))
+                Picasso.get().load(this[3].imageUrl)
+                    .into(findViewById<ImageView>(R.id.previewImage6))
+            }
+            findViewById<ImageView>(R.id.selection_one).let { imageView ->
+                Picasso.get().load(list[4].imageUrl).into(imageView)
+                imageView.setOnClickListener {
+                    viewModel.lastViewDataPress = 4
+                    onImageClick(4)
+                }
+            }
+            findViewById<ImageView>(R.id.selection_two).let { imageView ->
+                Picasso.get().load(list[5].imageUrl).into(imageView)
+                imageView.setOnClickListener {
+                    viewModel.lastViewDataPress = 5
+                    onImageClick(5)
+                }
             }
         }
 
