@@ -88,5 +88,4 @@ object RequestHandlerImpl: RequestHandler {
     override fun loadImage(url: String, target: Target) {
         Picasso.get().load(url).into(target)
     }
-
 }

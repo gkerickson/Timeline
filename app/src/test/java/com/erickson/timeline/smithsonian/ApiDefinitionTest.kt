@@ -1,9 +1,8 @@
-package com.erickson.timeline.model
+package com.erickson.timeline.smithsonian
 
 import com.erickson.timeline.smithsonian.RequestConstants.apiKey
 import com.erickson.timeline.smithsonian.RequestConstants.query
 import com.erickson.timeline.smithsonian.RequestConstants.url
-import com.erickson.timeline.smithsonian.Smithsonian
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.Record.OnlineMediaBody
 import okhttp3.OkHttpClient

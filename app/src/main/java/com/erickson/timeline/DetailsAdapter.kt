@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.erickson.timeline.model.DataViewModel
 
-class DetailsAdapter(val viewModel: DataViewModel) :
+class DetailsAdapter(private val viewModel: DataViewModel) :
     RecyclerView.Adapter<DetailViewFragment.NoteViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
