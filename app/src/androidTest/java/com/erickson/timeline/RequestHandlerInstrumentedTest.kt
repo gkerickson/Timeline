@@ -1,9 +1,9 @@
 package com.erickson.timeline
 
-import com.erickson.timeline.TestHelpers.mockDateAsDate
-import com.erickson.timeline.TestHelpers.mockNote
-import com.erickson.timeline.TestHelpers.mockResource
-import com.erickson.timeline.TestHelpers.mockSearchData
+import com.erickson.timeline.InstrumentedTestHelpers.mockDateAsDate
+import com.erickson.timeline.InstrumentedTestHelpers.mockNote
+import com.erickson.timeline.InstrumentedTestHelpers.mockResource
+import com.erickson.timeline.InstrumentedTestHelpers.mockSearchData
 import com.erickson.timeline.model.DataViewModel
 import com.erickson.timeline.smithsonian.RequestHandlerImpl.parseDate
 import com.erickson.timeline.smithsonian.RequestHandlerImpl.processSearchDataResponseBody

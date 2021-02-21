@@ -16,11 +16,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.stubbing.Answer
 
-class SmithsonianLiveDataInstrumentedTest {
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
+@RunWith(MockitoJUnitRunner::class)
+class SmithsonianLiveDataTest {
+
+    @Rule
+    @JvmField
+    val rule = InstantTaskExecutorRule()
 
     @Test
     fun testSmithsonianLiveData() {
