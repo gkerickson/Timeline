@@ -29,7 +29,7 @@ class DataViewModel: ViewModel() {
             return SimpleDateFormat("yyyy").parse(toParse)
         }
 
-        fun processSearchDataResponseBody(body: RequestDefinitions.Body<RequestDefinitions.SearchData>): List<ViewData> {
+        fun processSearchDataResponseBody(body: RequestDefinitions.Body<RequestDefinitions.SearchData>): Map<String, ViewData> {
             return body.response.rows.mapNotNull { response ->
                 response.content.run {
                     val date = parseDate(this.indexedStructured.date[0])
@@ -48,7 +48,7 @@ class DataViewModel: ViewModel() {
                         else this[0]
                     }
                 }
-            }
+            }.associateBy { it.id }
         }
     }
 
@@ -73,7 +73,7 @@ class DataViewModel: ViewModel() {
 
     var lastViewDataPress: Int = -1
 
-    val allViewData = object : LiveData<List<ViewData>>() {
+    val allViewData = object : LiveData<Map<String, ViewData>>() {
         override fun onActive() {
             if (this.value == null) {
                 smith.getIds(Smithsonian.apiKey, Smithsonian.query)
@@ -101,13 +101,20 @@ class DataViewModel: ViewModel() {
     }
 
     data class ActiveViewData(
-        val viewDataIndex: Int,
+        val viewData: ViewData,
         val imageTarget: Target
     )
 
-    class ImageTarget: Target {
+    class ImageTarget(private val callback: NotifyObserversCallback): Target {
+        private var image: Bitmap? = null
+
+        interface NotifyObserversCallback {
+            fun notifyObservers()
+        }
+
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            TODO("Not yet implemented")
+            callback.notifyObservers()
+            image = bitmap
         }
 
         override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
@@ -117,27 +124,25 @@ class DataViewModel: ViewModel() {
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             TODO("Not yet implemented")
         }
-
     }
 
     val activeViewData = object: MediatorLiveData<List<ActiveViewData>>() {
+        inner class Callback: ImageTarget.NotifyObserversCallback {
+            override fun notifyObservers() {notifyObservers()}
+        }
+
         override fun onActive() {
             if(this.value == null) {
-                addSource(allViewData) { list ->
-                    var index = 0
-                    list.subList(0, 4).sortedBy { viewData ->
+                addSource(allViewData) { map ->
+                    map.values.toList().subList(0,4).sortedBy { viewData ->
                         viewData.date
                     }.map { viewData ->
-                        ActiveViewData(viewData, ImageTarget().also {
+                        ActiveViewData(viewData, ImageTarget(Callback()).also {
                             Picasso.get().load(viewData.imageUrl).into(it)
                         })
-                        Picasso.get().load(subList[1].imageUrl).into(this)
-                        Picasso.get().load(subList[2].imageUrl).into(this)
-                        Picasso.get().load(subList[3].imageUrl).into(this)
                     }
                 }
             }
         }
     }
-
 }
