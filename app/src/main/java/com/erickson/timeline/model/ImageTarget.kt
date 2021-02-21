@@ -22,7 +22,5 @@ class ImageTarget(private val callback: NotifyObserversCallback) : Target {
         TODO("Not yet implemented")
     }
 
-    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-        TODO("Not yet implemented")
-    }
+    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
 }
