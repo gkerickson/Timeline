@@ -1,5 +1,7 @@
 package com.erickson.timeline
 
+import com.erickson.timeline.model.DataViewModel
+import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import java.util.*
 
@@ -54,4 +56,16 @@ object TestHelpers {
             RequestDefinitions.SearchData.ContentBody.FreeText(listOf(mockNote), null)
         )
     )
+
+    private var viewDataIndex = 1
+    fun mockViewDataFactory(): ViewData {
+        return ViewData(
+            "ViewDataId $viewDataIndex",
+            "ImageUrl $viewDataIndex",
+            mockDateFromYear(2000 + viewDataIndex),
+            emptyList()
+        ).also {
+            viewDataIndex++
+        }
+    }
 }

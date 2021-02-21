@@ -27,7 +27,7 @@ class SmithsonianLiveDataTest {
 
     @Test
     fun testSmithsonianLiveData() {
-        val mockViewData = DataViewModel.ViewData(
+        val mockViewData = ViewData(
             mockSearchData.id,
             mockResource.url,
             mockDateAsDate,

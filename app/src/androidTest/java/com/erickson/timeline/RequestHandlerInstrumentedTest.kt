@@ -44,7 +44,7 @@ class RequestHandlerInstrumentedTest {
 
         val mapOut = processSearchDataResponseBody(mockBody)
 
-        val mockViewData = DataViewModel.ViewData(
+        val mockViewData = ViewData(
             mockSearchData.id,
             mockResource.url,
             mockDateAsDate,

@@ -2,6 +2,7 @@ package com.erickson.timeline.smithsonian
 
 import android.annotation.SuppressLint
 import com.erickson.timeline.model.DataViewModel
+import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.RequestConstants.apiKey
 import com.erickson.timeline.smithsonian.RequestConstants.query
 import com.erickson.timeline.smithsonian.RequestConstants.url
@@ -37,7 +38,7 @@ object RequestHandlerImpl: RequestHandler {
         return SimpleDateFormat("yyyy").parse(toParse)
     }
 
-    fun processSearchDataResponseBody(body: RequestDefinitions.Body<RequestDefinitions.SearchData>): Map<String, DataViewModel.ViewData> {
+    fun processSearchDataResponseBody(body: RequestDefinitions.Body<RequestDefinitions.SearchData>): Map<String, ViewData> {
         return body.response.rows.mapNotNull { response ->
             response.content.run {
                 val date = this.indexedStructured.date.getOrNull(0)?.let { parseDate(it) }
@@ -50,7 +51,7 @@ object RequestHandlerImpl: RequestHandler {
                     media.resources?.find { resource ->
                         resource.label == RequestDefinitions.ImageType.THUMBNAIL.type
                     }?.url?.run {
-                        date?.let { DataViewModel.ViewData(response.id, this, it, notes) }
+                        date?.let { ViewData(response.id, this, it, notes) }
                     }
                 }.run {
                     if (isEmpty()) null
@@ -78,7 +79,7 @@ object RequestHandlerImpl: RequestHandler {
                 }
             }
         }
-        abstract fun withData(data: Map<String, DataViewModel.ViewData>)
+        abstract fun withData(data: Map<String, ViewData>)
     }
 
     override fun getData(callback: DataRequestCallback) {

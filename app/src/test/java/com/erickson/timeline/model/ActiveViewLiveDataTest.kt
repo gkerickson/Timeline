@@ -19,8 +19,8 @@ class ActiveViewLiveDataTest {
     val rule = InstantTaskExecutorRule()
 
     private var id = 0
-    private fun mockViewDataPairFactory(): Pair<String, DataViewModel.ViewData> {
-        val viewData = DataViewModel.ViewData(
+    private fun mockViewDataPairFactory(): Pair<String, ViewData> {
+        val viewData = ViewData(
             TestHelpers.mockSearchData.id + id.toString(),
             TestHelpers.mockResource.url + id.toString(),
             TestHelpers.mockDateFromYear(2000 + id),
@@ -30,13 +30,13 @@ class ActiveViewLiveDataTest {
         return Pair(viewData.id, viewData)
     }
 
-    private lateinit var mockLiveData: MutableLiveData<Map<String, DataViewModel.ViewData>>
+    private lateinit var mockLiveData: MutableLiveData<Map<String, ViewData>>
     private var mockHandler: RequestHandler = mock()
     private lateinit var subject: ActiveViewLiveData
 
     @Before
     fun setup() {
-        mockLiveData = MutableLiveData<Map<String, DataViewModel.ViewData>>()
+        mockLiveData = MutableLiveData<Map<String, ViewData>>()
         subject = ActiveViewLiveData(mockLiveData, mockHandler)
         subject.observeForever {}
     }
@@ -72,7 +72,7 @@ class ActiveViewLiveDataTest {
         assertEquals(expectedViewData.toString(), subjectViewData.toString())
     }
 
-    private val firstViewDataPair = DataViewModel.ViewData(
+    private val firstViewDataPair = ViewData(
         "firstViewData",
         "TEMP",
         TestHelpers.mockDateFromYear(1),
@@ -84,7 +84,7 @@ class ActiveViewLiveDataTest {
     @Test
     fun testSortsValuesInList() {
 
-        val lastViewDataPair = DataViewModel.ViewData(
+        val lastViewDataPair = ViewData(
             "lastViewData",
             "TEMP",
             TestHelpers.mockDateFromYear(3000),

@@ -5,12 +5,12 @@ import com.erickson.timeline.smithsonian.RequestHandler
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
 
 class SmithsonianLiveData(private val handler: RequestHandler) :
-    LiveData<Map<String, DataViewModel.ViewData>>() {
+    LiveData<Map<String, ViewData>>() {
 
     override fun onActive() {
         if (this.value == null) {
             handler.getData(object : RequestHandlerImpl.DataRequestCallback() {
-                override fun withData(data: Map<String, DataViewModel.ViewData>) {
+                override fun withData(data: Map<String, ViewData>) {
                     value = data
                 }
             })

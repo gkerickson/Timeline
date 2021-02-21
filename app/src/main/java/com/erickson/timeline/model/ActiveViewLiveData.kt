@@ -2,14 +2,12 @@ package com.erickson.timeline.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.erickson.timeline.model.DataViewModel.ActiveViewData
 import com.erickson.timeline.smithsonian.RequestHandler
 
 class ActiveViewLiveData(
-    private val smithLiveData: LiveData<Map<String, DataViewModel.ViewData>>,
+    private val smithLiveData: LiveData<Map<String, ViewData>>,
     private val handler: RequestHandler,
-) :
-    MediatorLiveData<List<ActiveViewData>>() {
+) : MediatorLiveData<List<ActiveViewData>>() {
     inner class OnImageLoadCallback : ImageTarget.NotifyObserversCallback {
         override fun notifyObservers() {
             notifyObservers()
@@ -21,7 +19,7 @@ class ActiveViewLiveData(
         if (this.value == null) {
             addSource(smithLiveData) { map ->
                 value = map.values.toList().run {
-                    if(size < 4) this
+                    if (size < 4) this
                     else subList(0, 4)
                 }.sortedBy { viewData ->
                     viewData.date
