@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.erickson.timeline.model.DataViewModel
+import com.erickson.timeline.model.TimelineDataModel
 
-class DetailsAdapter(private val viewModel: DataViewModel) :
+class DetailsAdapter(private val viewModel: TimelineDataModel) :
     RecyclerView.Adapter<DetailViewFragment.NoteViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
