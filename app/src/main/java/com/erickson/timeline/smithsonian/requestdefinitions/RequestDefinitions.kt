@@ -21,7 +21,7 @@ object RequestDefinitions {
         data class ContentBody(
             val descriptiveNonRepeating: Record,
             val indexedStructured: Structured,
-            val freeText: FreeText
+            val freeText: FreeText?
         ) {
             data class Record(
                 val id: String,

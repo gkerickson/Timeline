@@ -1,5 +1,7 @@
 package com.erickson.timeline.smithsonian
 
+import com.erickson.timeline.smithsonian.RequestConstants.API_KEY
+import com.erickson.timeline.smithsonian.RequestConstants.QUERY
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import retrofit2.Call
 import retrofit2.http.GET

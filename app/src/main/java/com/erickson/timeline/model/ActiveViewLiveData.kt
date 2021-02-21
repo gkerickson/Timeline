@@ -21,8 +21,8 @@ class ActiveViewLiveData(
                 value = map.values.toList().run {
                     if (size < 4) this
                     else subList(0, 4)
-                }.sortedBy { viewData ->
-                    viewData.date
+                }.sortedBy {
+                    it.date
                 }.map { viewData ->
                     ActiveViewData(
                         viewData,

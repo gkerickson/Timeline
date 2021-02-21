@@ -5,6 +5,7 @@ import com.erickson.timeline.InstrumentedTestHelpers.mockNote
 import com.erickson.timeline.InstrumentedTestHelpers.mockResource
 import com.erickson.timeline.InstrumentedTestHelpers.mockSearchData
 import com.erickson.timeline.model.DataViewModel
+import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.RequestHandlerImpl.parseDate
 import com.erickson.timeline.smithsonian.RequestHandlerImpl.processSearchDataResponseBody
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
