@@ -10,7 +10,7 @@ class ActiveViewLiveData(
     private val handler: RequestHandler,
 ) :
     MediatorLiveData<List<ActiveViewData>>() {
-    inner class Callback : ImageTarget.NotifyObserversCallback {
+    inner class OnImageLoadCallback : ImageTarget.NotifyObserversCallback {
         override fun notifyObservers() {
             notifyObservers()
         }
@@ -28,7 +28,7 @@ class ActiveViewLiveData(
                 }.map { viewData ->
                     ActiveViewData(
                         viewData,
-                        ImageTarget(Callback()).also {
+                        ImageTarget(OnImageLoadCallback()).also {
                             handler.loadImage(viewData.imageUrl, it)
                         })
                 }
