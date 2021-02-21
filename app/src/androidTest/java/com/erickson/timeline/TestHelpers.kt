@@ -1,14 +1,7 @@
 package com.erickson.timeline
 
-import com.erickson.timeline.smithsonian.Smithsonian
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
-import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.Record.OnlineMediaBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.junit.Assert.assertNotNull
-import org.junit.Test
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 object TestHelpers {
     val mockResource =

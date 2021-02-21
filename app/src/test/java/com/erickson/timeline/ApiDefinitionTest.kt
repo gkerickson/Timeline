@@ -1,5 +1,8 @@
 package com.erickson.timeline
 
+import com.erickson.timeline.smithsonian.RequestConstants.apiKey
+import com.erickson.timeline.smithsonian.RequestConstants.query
+import com.erickson.timeline.smithsonian.RequestConstants.url
 import com.erickson.timeline.smithsonian.Smithsonian
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.Record.OnlineMediaBody
@@ -22,7 +25,7 @@ class ApiDefinitionTest {
 
     val smith: Smithsonian by lazy {
         Retrofit.Builder()
-            .baseUrl(Smithsonian.url)
+            .baseUrl(url)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(Smithsonian::class.java)
@@ -31,7 +34,7 @@ class ApiDefinitionTest {
     @Test
     fun testGetAnImageUrl() {
         val imageUrl: String =
-            smith.getIds(Smithsonian.apiKey, Smithsonian.query).execute().body()?.run {
+            smith.getIds(apiKey, query).execute().body()?.run {
                 this.response.rows.get(0).content.descriptiveNonRepeating.online_media.media.get(0).guid
             } ?: ""
 
@@ -40,7 +43,7 @@ class ApiDefinitionTest {
 
     @Test
     fun testCanGetAnActualImage() {
-        val media: OnlineMediaBody.Media? = smith.getIds(Smithsonian.apiKey, Smithsonian.query).execute().body()?.run {
+        val media: OnlineMediaBody.Media? = smith.getIds(apiKey, query).execute().body()?.run {
             this.response.rows[0].content.descriptiveNonRepeating.online_media.media[0]
         }
 
