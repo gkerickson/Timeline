@@ -14,12 +14,20 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
                 allViewData.putAll(data)
-                timelineViewData.forEach { liveData ->
-                    allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
-                        Log.e("GALEN", "SETTING")
-                        liveData.setValue(viewData)
+
+                listOf(
+                    allViewData[nextActiveLiveDataIdFactory()],
+                    allViewData[nextActiveLiveDataIdFactory()],
+                    allViewData[nextActiveLiveDataIdFactory()],
+                    allViewData[nextActiveLiveDataIdFactory()]
+                ).sortedByDescending {
+                    it?.date
+                }.apply {
+                    for(i in 0 until 4) {
+                        this[i]?.let { timelineViewData[i].setValue(it) }
                     }
                 }
+
                 allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
                     choiceOneActiveViewData.setValue(viewData)
                 }
@@ -61,7 +69,7 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             choiceTwoActiveViewData,
             timelineViewData[1],
             timelineViewData[2]
-        ).sortedBy {
+        ).sortedByDescending {
             it.value!!.viewData.date
         }.map {
             it.value?.viewData
