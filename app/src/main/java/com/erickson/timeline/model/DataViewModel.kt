@@ -82,23 +82,22 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         }
     }
 
-    override var selectedId: String = ""
+    override var selectedId: MutableLiveData<String> = MutableLiveData("")
     override val timelineViewData: List<LiveData<ActiveViewData>> = activeViewLiveData.map { it }
     override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
     override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
-    override fun getSelected(): LiveData<ActiveViewData> {
-        Log.e("GALEN", "GETTING SELECTED")
+    override val selected: MediatorLiveData<ActiveViewData> = MediatorLiveData<ActiveViewData>().apply {
+        addSource(selectedId) { id ->
+            timelineViewData.forEach { timelineLiveData ->
+                if (timelineLiveData.value?.viewData?.id == id)
+                    value = timelineLiveData.value
+            }
 
-        timelineViewData.forEach { timelineLiveData ->
-            if (timelineLiveData.value?.viewData?.id == selectedId)
-                return@getSelected timelineLiveData
+            if (choiceOneViewData.value?.viewData?.id == id)
+                value = choiceOneViewData.value
+
+            if (choiceTwoViewData.value?.viewData?.id == id)
+                value = choiceTwoActiveViewData.value
         }
-
-        if (choiceOneViewData.value?.viewData?.id == selectedId)
-            return choiceOneActiveViewData
-
-        if (choiceTwoViewData.value?.viewData?.id == selectedId)
-            return choiceTwoViewData
-        return MutableLiveData()
     }
 }

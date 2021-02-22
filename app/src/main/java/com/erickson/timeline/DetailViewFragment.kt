@@ -26,7 +26,6 @@ class DetailViewFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.activity_detail_view, container, false)
         val viewModel: DataViewModel by activityViewModels()
-        val selected = viewModel.getSelected()
         Log.e("GALEN", "Creating view")
 
         if (savedInstanceState == null) {
@@ -35,10 +34,10 @@ class DetailViewFragment : Fragment() {
                 ?.also { recyclerView ->
                     Log.e("GALEN", "Preping recycler view")
                     recyclerView.layoutManager = LinearLayoutManager(context)
-                    recyclerView.adapter = DetailsAdapter(selected)
+                    recyclerView.adapter = DetailsAdapter(viewModel.selected)
                 }
 
-            selected.observe(this.viewLifecycleOwner) {
+            viewModel.selected.observe(this.viewLifecycleOwner) {
                 view.findViewById<ImageView>(R.id.detail_image).setImageBitmap(it.bitmap)
                 view?.findViewById<RecyclerView>(R.id.recycler_view)?.adapter?.notifyDataSetChanged()
             }

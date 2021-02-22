@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             view.isClickable = true
             view.setOnClickListener {
                 liveData.value?.viewData?.id?.apply {
-                    viewModel.selectedId = this
+                    viewModel.selectedId.value = this
                 }
                 onImageClick()
             }
