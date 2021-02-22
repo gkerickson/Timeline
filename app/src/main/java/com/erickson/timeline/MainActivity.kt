@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Guideline
+import androidx.core.view.setPadding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.DataViewModel
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private fun onImageClick() {
@@ -43,8 +46,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.timeline_layout).apply {
             isClickable = false
         }
-        timelineImageViews.forEach { it.isClickable = true }
-        choiceImageViews.forEach { it.isClickable = false }
+        timelineImageViews.forEach {
+            it.isClickable = true
+            it.setPadding(50)
+        }
+        choiceImageViews.forEach {
+            it.isClickable = false
+            it.setPadding(0)
+        }
         findViewById<Guideline>(R.id.main_guideline).apply {
             setGuidelinePercent(0.25F)
         }
@@ -58,8 +67,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.timeline_layout).apply {
             isClickable = true
         }
-        timelineImageViews.forEach { it.isClickable = false }
-        choiceImageViews.forEach { it.isClickable = true }
+        timelineImageViews.forEach {
+            it.isClickable = false
+            it.setPadding(0)
+        }
+        choiceImageViews.forEach {
+            it.isClickable = true
+            it.setPadding(50)
+        }
         findViewById<Guideline>(R.id.main_guideline).apply {
             setGuidelinePercent(0.75F)
         }
@@ -101,5 +116,18 @@ class MainActivity : AppCompatActivity() {
         toChoiceFocus()
         findViewById<View>(R.id.timeline_layout).setOnClickListener { toTimelineFocus() }
         findViewById<View>(R.id.parent_layout).setOnClickListener { toChoiceFocus() }
+
+        viewModel.highestTime.observe(this) {
+            findViewById<TextView>(R.id.topTime).text = Calendar.getInstance().run {
+                this.time = it
+                get(Calendar.YEAR).toString()
+            }
+        }
+        viewModel.lowestTime.observe(this) {
+            findViewById<TextView>(R.id.bottomTime).text = Calendar.getInstance().run {
+                this.time = it
+                get(Calendar.YEAR).toString()
+            }
+        }
     }
 }

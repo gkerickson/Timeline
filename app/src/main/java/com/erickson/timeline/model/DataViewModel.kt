@@ -2,9 +2,11 @@ package com.erickson.timeline.model
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
+import java.util.*
 
 class DataViewModel : ViewModel(), TimelineDataModel {
     private var allViewData: MutableMap<String, ViewData> = run {
@@ -48,6 +50,38 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         ActiveViewLiveData(RequestHandlerImpl)
     )
 
+    val lowestTime by lazy {
+        MediatorLiveData<Date>().apply {
+            timelineViewData.forEach { timelineLiveData ->
+                addSource(timelineLiveData) {
+                    it.viewData.date.let { newDate ->
+                        this.value?.let { oldDate ->
+                            if (oldDate > newDate) this.value = newDate
+                        } ?: run {
+                            this.value = newDate
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    val highestTime by lazy {
+        MediatorLiveData<Date>().apply {
+            timelineViewData.forEach { timelineLiveData ->
+                addSource(timelineLiveData) {
+                    it.viewData.date.let { newDate ->
+                        this.value?.let { oldDate ->
+                            if (oldDate < newDate) this.value = newDate
+                        } ?: run {
+                            this.value = newDate
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override var selectedId: String = ""
     override val timelineViewData: List<LiveData<ActiveViewData>> = activeViewLiveData.map { it }
     override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
@@ -60,10 +94,10 @@ class DataViewModel : ViewModel(), TimelineDataModel {
                 return@getSelected timelineLiveData
         }
 
-        if(choiceOneViewData.value?.viewData?.id == selectedId)
+        if (choiceOneViewData.value?.viewData?.id == selectedId)
             return choiceOneActiveViewData
 
-        if(choiceTwoViewData.value?.viewData?.id == selectedId)
+        if (choiceTwoViewData.value?.viewData?.id == selectedId)
             return choiceTwoViewData
         return MutableLiveData()
     }
