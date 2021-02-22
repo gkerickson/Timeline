@@ -22,10 +22,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val imageIds = listOf(
-        R.id.previewImage3,
-        R.id.previewImage4,
-        R.id.previewImage5,
-        R.id.previewImage6,
+        R.id.timeline_image_1,
+        R.id.timeline_image_2,
+        R.id.timeline_image_3,
+        R.id.timeline_image_4,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         fun setupImageObserver(liveData: LiveData<ActiveViewData>, view: ImageView) {
             liveData.observe(this) {
-                Log.e("GALEN", "${it.viewData} with ${it.imageTarget != null} in ${view.id}")
-                view.setImageBitmap(it.imageTarget)
+                Log.e("GALEN", "${it.viewData} with ${it.bitmap != null} in ${view.id}")
+                view.setImageBitmap(it.bitmap)
                 view.rootView.invalidate()
             }
             view.isClickable = true

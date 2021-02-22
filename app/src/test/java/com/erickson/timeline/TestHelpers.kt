@@ -1,11 +1,23 @@
 package com.erickson.timeline
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.DataViewModel
+import com.erickson.timeline.model.TimelineDataModel
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import java.util.*
 
 object TestHelpers {
+    abstract class MockTimelineDataModel: TimelineDataModel {
+        override val timelineViewData: List<LiveData<ActiveViewData>> = emptyList()
+        override val choiceOneViewData: LiveData<ActiveViewData> = MutableLiveData()
+        override val choiceTwoViewData: LiveData<ActiveViewData> = MutableLiveData()
+        override var selectedId: String = ""
+        override fun getSelected() : LiveData<ActiveViewData> = MutableLiveData()
+    }
+
     val mockResource =
         RequestDefinitions.SearchData.ContentBody.Record.OnlineMediaBody.Media.Resource(
             RequestDefinitions.ImageType.THUMBNAIL.type,

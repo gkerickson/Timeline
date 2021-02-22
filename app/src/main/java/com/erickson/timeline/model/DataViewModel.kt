@@ -48,6 +48,10 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         ActiveViewLiveData(RequestHandlerImpl)
     )
 
+    override var selectedId: String = ""
+    override val timelineViewData: List<LiveData<ActiveViewData>> = activeViewLiveData.map { it }
+    override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
+    override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
     override fun getSelected(): LiveData<ActiveViewData> {
         Log.e("GALEN", "GETTING SELECTED")
 
@@ -63,9 +67,4 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             return choiceTwoViewData
         return MutableLiveData()
     }
-
-    override val timelineViewData: List<LiveData<ActiveViewData>> = activeViewLiveData.map { it }
-    override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
-    override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
-    override var selectedId: String = ""
 }

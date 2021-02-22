@@ -42,8 +42,8 @@ object RequestHandlerImpl : RequestHandler {
                 val date = this.indexedStructured.date.getOrNull(0)?.let { parseDate(it) }
                 val notes: MutableList<RequestDefinitions.SearchData.ContentBody.FreeText.Note> =
                     mutableListOf()
-                freeText?.name?.let { notes.addAll(it) }
-                freeText?.notes?.let { notes.addAll(it) }
+                freetext?.name?.let { notes.addAll(it) }
+                freetext?.notes?.let { notes.addAll(it) }
 
                 descriptiveNonRepeating.online_media.media.mapNotNull { media ->
                     media.resources?.find { resource ->

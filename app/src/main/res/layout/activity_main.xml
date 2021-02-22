@@ -69,52 +69,53 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="1200 BCE"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/previewImage3"
-            android:layout_width="match_parent"
+            android:id="@+id/timeline_image_1"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/previewImage4"
+            app:layout_constraintBottom_toTopOf="@+id/timeline_image_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topTime"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/previewImage4"
-            android:layout_width="match_parent"
+            android:id="@+id/timeline_image_2"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/previewImage5"
+            app:layout_constraintBottom_toTopOf="@+id/timeline_image_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewImage3"
+            app:layout_constraintTop_toBottomOf="@+id/timeline_image_1"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/previewImage5"
-            android:layout_width="match_parent"
+            android:id="@+id/timeline_image_3"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/previewImage6"
+            app:layout_constraintBottom_toTopOf="@+id/timeline_image_4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewImage4"
+            app:layout_constraintTop_toBottomOf="@+id/timeline_image_2"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/previewImage6"
-            android:layout_width="match_parent"
+            android:id="@+id/timeline_image_4"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewImage5"
+            app:layout_constraintTop_toBottomOf="@+id/timeline_image_3"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -124,9 +125,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
             android:text="1500 CE"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewImage6" />
+            app:layout_constraintTop_toBottomOf="@+id/timeline_image_4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

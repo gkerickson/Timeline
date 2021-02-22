@@ -13,5 +13,5 @@ data class ViewData(
 
 data class ActiveViewData(
     val viewData: ViewData,
-    val imageTarget: Bitmap?
+    val bitmap: Bitmap?
 )

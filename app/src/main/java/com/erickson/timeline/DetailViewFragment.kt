@@ -39,7 +39,7 @@ class DetailViewFragment : Fragment() {
                 }
 
             selected.observe(this.viewLifecycleOwner) {
-                view.findViewById<ImageView>(R.id.detail_image).setImageBitmap(it.imageTarget)
+                view.findViewById<ImageView>(R.id.detail_image).setImageBitmap(it.bitmap)
                 view?.findViewById<RecyclerView>(R.id.recycler_view)?.adapter?.notifyDataSetChanged()
             }
         }

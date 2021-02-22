@@ -12,7 +12,6 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 /**
  * Sanity test to make sure Smithsonian apis are still behaving as expected and integrating with
  * retrofit well
@@ -46,8 +45,8 @@ class ApiDefinitionTest {
             this.response.rows[0].content.descriptiveNonRepeating.online_media.media[0]
         }
 
-        val imageUrl: String = media?.resources?.find {resource: OnlineMediaBody.Media.Resource ->
-                resource.label == RequestDefinitions.ImageType.THUMBNAIL.type
+        val imageUrl: String = media?.resources?.find { resource: OnlineMediaBody.Media.Resource ->
+            resource.label == RequestDefinitions.ImageType.THUMBNAIL.type
         }?.url ?: ""
 
         val imageRequest = Request.Builder()
@@ -62,6 +61,15 @@ class ApiDefinitionTest {
 
     @Test
     fun testGetSomethingWithNotes() {
-        smith.get
+        val response = smith.getIds().execute()
+        val check = response.body()?.run {
+            this.response.rows.forEach {
+                if (it.content.freetext?.run {
+                        notes != null || name != null
+                    } == true) return@run true
+            }
+        }
+
+        assert(check == true)
     }
 }
