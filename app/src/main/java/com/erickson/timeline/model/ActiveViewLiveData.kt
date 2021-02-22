@@ -1,36 +1,29 @@
 package com.erickson.timeline.model
 
+import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import com.erickson.timeline.smithsonian.RequestHandler
 
 class ActiveViewLiveData(
-    private val smithLiveData: LiveData<Map<String, ViewData>>,
     private val handler: RequestHandler,
-) : MediatorLiveData<List<ActiveViewData>>() {
+) : LiveData<ActiveViewData>() {
+    private val target = ImageTarget(OnImageLoadCallback())
+
     inner class OnImageLoadCallback : ImageTarget.NotifyObserversCallback {
-        override fun notifyObservers() {
-            notifyObservers()
+        override fun setBitmap(image: Bitmap?) {
+            Log.e("GALEN", "SETTING")
+            value?.viewData?.let { viewData ->
+                value = ActiveViewData(
+                    viewData,
+                    image
+                )
+            }
         }
     }
 
-    override fun onActive() {
-        super.onActive()
-        if (this.value == null) {
-            addSource(smithLiveData) { map ->
-                value = map.values.toList().run {
-                    if (size < 4) this
-                    else subList(0, 4)
-                }.sortedBy {
-                    it.date
-                }.map { viewData ->
-                    ActiveViewData(
-                        viewData,
-                        ImageTarget(OnImageLoadCallback()).also {
-                            handler.loadImage(viewData.imageUrl, it)
-                        })
-                }
-            }
-        }
+    fun setValue(viewData: ViewData) {
+        handler.loadImage(viewData.imageUrl, target)
+        value = ActiveViewData(viewData, null)
     }
 }

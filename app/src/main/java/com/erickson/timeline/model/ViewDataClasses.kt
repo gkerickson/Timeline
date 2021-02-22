@@ -1,5 +1,6 @@
 package com.erickson.timeline.model
 
+import android.graphics.Bitmap
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import java.util.*
 
@@ -12,5 +13,5 @@ data class ViewData(
 
 data class ActiveViewData(
     val viewData: ViewData,
-    val imageTarget: ImageTarget
+    val imageTarget: Bitmap?
 )

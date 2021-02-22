@@ -1,6 +1,7 @@
 package com.erickson.timeline.smithsonian
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.RequestConstants.TARGET_URL
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
@@ -86,6 +87,7 @@ object RequestHandlerImpl : RequestHandler {
     }
 
     override fun loadImage(url: String, target: Target) {
+        Log.e("GALEN", "LOADING $url")
         Picasso.get().load(url).into(target)
     }
 }

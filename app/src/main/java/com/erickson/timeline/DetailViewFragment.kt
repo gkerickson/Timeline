@@ -32,7 +32,7 @@ class DetailViewFragment : Fragment() {
                     recyclerView.adapter = DetailsAdapter(viewModel)
                 }
 
-            viewModel.allViewData.observe(this.viewLifecycleOwner) {
+            viewModel.getSelected().observe(this.viewLifecycleOwner) {
                 container?.findViewById<RecyclerView>(R.id.recycler_view)?.adapter?.notifyDataSetChanged()
             }
         }

@@ -3,7 +3,6 @@ package com.erickson.timeline
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.erickson.timeline.model.DataViewModel
 import com.erickson.timeline.model.TimelineDataModel
 
 class DetailsAdapter(private val viewModel: TimelineDataModel) :
@@ -21,14 +20,14 @@ class DetailsAdapter(private val viewModel: TimelineDataModel) :
         if (itemCount == 0) {
             return
         }
-        viewModel.allViewData.value?.get(viewModel.selectedId)?.notes?.get(position)
-            ?.apply {
-                holder.labelView.text = this.label
-                holder.contentView.text = this.content
+        viewModel.getSelected().value?.viewData?.notes?.get(position)
+            .apply {
+                holder.labelView.text = this?.label
+                holder.contentView.text = this?.content
             }
     }
 
     override fun getItemCount(): Int {
-        return viewModel.allViewData.value?.get(viewModel.selectedId)?.notes?.size ?: 0
+        return viewModel.getSelected().value?.viewData?.notes?.size ?: 0
     }
 }
