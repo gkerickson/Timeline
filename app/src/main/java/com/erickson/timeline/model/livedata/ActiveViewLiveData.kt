@@ -15,7 +15,6 @@ class ActiveViewLiveData(
 
     inner class OnImageLoadCallback : ImageTarget.NotifyObserversCallback {
         override fun setBitmap(image: Bitmap?) {
-            Log.e("GALEN", "SETTING")
             value?.viewData?.let { viewData ->
                 value = ActiveViewData(
                     viewData,

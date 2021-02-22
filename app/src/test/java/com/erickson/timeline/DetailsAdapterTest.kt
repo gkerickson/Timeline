@@ -12,7 +12,6 @@ import org.junit.Test
 import java.util.*
 
 class DetailsAdapterTest {
-
     private fun mockViewDataFactory(notes: Int): ViewData {
         return ViewData(
             "selectedViewData",
@@ -39,7 +38,7 @@ class DetailsAdapterTest {
                     mockViewDataFactory(1),
                     null
                 )
-            )
+            ), MutableLiveData(false)
         )
 
         assertEquals(1, subject.itemCount)
@@ -55,7 +54,7 @@ class DetailsAdapterTest {
                     selectedViewData,
                     null
                 )
-            )
+            ), MutableLiveData(false)
         )
 
         assertEquals(10, subject.itemCount)
@@ -71,7 +70,7 @@ class DetailsAdapterTest {
                     selectedViewData,
                     null
                 )
-            )
+            ), MutableLiveData(false)
         )
 
         val viewHolder: DetailViewFragment.NoteViewHolder = mock()
@@ -85,7 +84,7 @@ class DetailsAdapterTest {
     }
 
     @Test
-    fun testOnBindViewHolderWithNoNotesDoesntThrowAnException() {
+    fun testOnBindViewHolderWithNoNotesDoesNotThrowAnException() {
         val selectedViewData = mockViewDataFactory(0)
 
         DetailsAdapter(
@@ -94,7 +93,21 @@ class DetailsAdapterTest {
                     selectedViewData,
                     null
                 )
-            )
+            ), MutableLiveData(false)
+        ).onBindViewHolder(mock(), 0)
+    }
+
+    @Test
+    fun testOnBindViewHolderWithShouldHideDatesHidesDates() {
+        val selectedViewData = mockViewDataFactory(0)
+
+        DetailsAdapter(
+            MutableLiveData(
+                ActiveViewData(
+                    selectedViewData,
+                    null
+                )
+            ), MutableLiveData(false)
         ).onBindViewHolder(mock(), 0)
     }
 }

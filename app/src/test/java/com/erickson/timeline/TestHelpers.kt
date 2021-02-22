@@ -69,11 +69,11 @@ object TestHelpers {
     )
 
     private var viewDataIndex = 1
-    fun mockViewDataFactory(): ViewData {
+    fun mockViewDataFactory(date: Date? = null): ViewData {
         return ViewData(
             "ViewDataId $viewDataIndex",
             "ImageUrl $viewDataIndex",
-            mockDateFromYear(2000 + viewDataIndex),
+            date ?: mockDateFromYear(2000 + viewDataIndex),
             emptyList()
         ).also {
             viewDataIndex++
