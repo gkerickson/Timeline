@@ -1,7 +1,6 @@
 package com.erickson.timeline
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -48,9 +47,9 @@ class DetailViewFragment : Fragment() {
 
     fun buttonOnPress() {
         val toCheck = selectedMoreModern()
-        if(toCheck == true) {
+        if (toCheck == true) {
             // Display congrats
-        } else if(toCheck == false){
+        } else if (toCheck == false) {
             // display so sorry
         }
         // Update viewModel
@@ -78,7 +77,8 @@ class DetailViewFragment : Fragment() {
             view?.findViewById<RecyclerView>(R.id.recycler_view)
                 ?.also { recyclerView ->
                     recyclerView.layoutManager = LinearLayoutManager(context)
-                    recyclerView.adapter = DetailsAdapter(viewModel.selected)
+                    recyclerView.adapter =
+                        DetailsAdapter(viewModel.selected, viewModel.shouldShowButton)
                 }
 
             viewModel.selected.observe(this.viewLifecycleOwner) {
@@ -90,6 +90,8 @@ class DetailViewFragment : Fragment() {
                         get(Calendar.YEAR).toString()
                     }
                     findViewById<TextView>(R.id.detail_label).text = "Date"
+                    visibility =
+                        if (viewModel.shouldShowButton.value == true) View.GONE else View.VISIBLE
                 }
             }
         }
