@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         setupImageObserver(viewModel.choiceOneViewData, findViewById(R.id.selection_one))
         setupImageObserver(viewModel.choiceTwoViewData, findViewById(R.id.selection_two))
         toChoiceFocus()
-        findViewById<View>(R.id.timeline_layout).setOnClickListener {  toTimelineFocus() }
+        findViewById<View>(R.id.timeline_layout).setOnClickListener { toTimelineFocus() }
         findViewById<View>(R.id.parent_layout).setOnClickListener { toChoiceFocus() }
     }
 }
