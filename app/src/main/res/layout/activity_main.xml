@@ -5,6 +5,7 @@
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/teal_200"
     tools:context=".MainActivity">
 
@@ -42,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="1200 BCE"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24sp"
@@ -53,9 +53,9 @@
 
         <ImageView
             android:id="@+id/timeline_image_1"
+            style="@style/TimelineImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@+id/timeline_image_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +64,7 @@
 
         <ImageView
             android:id="@+id/timeline_image_2"
+            style="@style/TimelineImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -75,6 +76,7 @@
 
         <ImageView
             android:id="@+id/timeline_image_3"
+            style="@style/TimelineImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -86,6 +88,7 @@
 
         <ImageView
             android:id="@+id/timeline_image_4"
+            style="@style/TimelineImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -101,7 +104,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
-            android:text="1500 CE"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24sp"

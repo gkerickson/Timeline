@@ -1,8 +1,11 @@
-package com.erickson.timeline.model
+package com.erickson.timeline.model.livedata
 
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.erickson.timeline.model.ActiveViewData
+import com.erickson.timeline.model.ImageTarget
+import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.RequestHandler
 
 class ActiveViewLiveData(
@@ -28,6 +31,7 @@ class ActiveViewLiveData(
     }
 
     override fun compareTo(other: ActiveViewLiveData): Int {
-        return ((this.value?.viewData?.date?.time ?: 0) - (other.value?.viewData?.date?.time ?: 0)).toInt()
+        return ((this.value?.viewData?.date?.time ?: 0) - (other.value?.viewData?.date?.time
+            ?: 0)).toInt()
     }
 }

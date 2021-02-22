@@ -1,11 +1,14 @@
 package com.erickson.timeline
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.view.setPadding
 import androidx.lifecycle.LiveData
@@ -14,12 +17,14 @@ import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.DataViewModel
 import com.squareup.picasso.Picasso
 import java.util.*
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     private fun onImageClick() {
         this.supportFragmentManager.beginTransaction()
             .setReorderingAllowed(true)
             .addToBackStack(null)
+            .setCustomAnimations(R.anim.slide_in, R.anim.slide_out,R.anim.slide_in, R.anim.slide_out)
             .add(R.id.fragment, DetailViewFragment())
             .commit()
     }
@@ -42,46 +47,87 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+
+    // TODO: Use scenes to manage animation
+    interface ToAnimate {
+        val start: Float
+        val end: Float
+        fun setValue(value: Float)
+    }
+    private val animationList: List<ToAnimate> = listOf(
+        object : ToAnimate {
+            override val start: Float = 0.75f
+            override val end: Float = 0.25f
+            override fun setValue(value: Float) {
+                (findViewById<Guideline>(R.id.main_guideline).layoutParams as ConstraintLayout.LayoutParams).apply {
+                    guidePercent = value
+                    findViewById<Guideline>(R.id.main_guideline).layoutParams = this
+                }
+            }
+        },
+        object : ToAnimate {
+            override val start: Float = 0f
+            override val end: Float = 10f
+            override fun setValue(value: Float) {
+                timelineImageViews.forEach {
+                    it.setPadding(value.toInt())
+                }
+            }
+        },
+        object : ToAnimate {
+            override val start: Float = 50f
+            override val end: Float = 0f
+            override fun setValue(value: Float) {
+                choiceImageViews.forEach {
+                    it.setPadding(value.toInt())
+                }
+            }
+        }
+    )
+    private val animator = ValueAnimator.ofInt(0, 100).apply {
+        duration = 1000
+        interpolator = AccelerateDecelerateInterpolator()
+        addUpdateListener { valueAnimator ->
+            animationList.forEach {
+                it.setValue(
+                    (abs(it.start - it.end) *valueAnimator.animatedFraction).run {
+                        if(it.start > it.end) it.start - this
+                        else it.end - this
+                    }
+                )
+            }
+        }
+    }
     private fun toTimelineFocus() {
         findViewById<View>(R.id.timeline_layout).apply {
             isClickable = false
         }
         timelineImageViews.forEach {
             it.isClickable = true
-            it.setPadding(50)
         }
         choiceImageViews.forEach {
             it.isClickable = false
-            it.setPadding(0)
-        }
-        findViewById<Guideline>(R.id.main_guideline).apply {
-            setGuidelinePercent(0.25F)
         }
         findViewById<View>(R.id.parent_layout).apply {
             isClickable = true
-            invalidate()
         }
-    }
+        animator.start()
 
+    }
     private fun toChoiceFocus() {
         findViewById<View>(R.id.timeline_layout).apply {
             isClickable = true
         }
         timelineImageViews.forEach {
             it.isClickable = false
-            it.setPadding(0)
         }
         choiceImageViews.forEach {
             it.isClickable = true
-            it.setPadding(50)
-        }
-        findViewById<Guideline>(R.id.main_guideline).apply {
-            setGuidelinePercent(0.75F)
         }
         findViewById<View>(R.id.parent_layout).apply {
             isClickable = false
-            invalidate()
         }
+        animator.reverse()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +159,6 @@ class MainActivity : AppCompatActivity() {
             }
         setupImageObserver(viewModel.choiceOneViewData, findViewById(R.id.selection_one))
         setupImageObserver(viewModel.choiceTwoViewData, findViewById(R.id.selection_two))
-        toChoiceFocus()
         findViewById<View>(R.id.timeline_layout).setOnClickListener { toTimelineFocus() }
         findViewById<View>(R.id.parent_layout).setOnClickListener { toChoiceFocus() }
 
@@ -135,5 +180,6 @@ class MainActivity : AppCompatActivity() {
                 invalidate()
             }
         }
+        toTimelineFocus()
     }
 }

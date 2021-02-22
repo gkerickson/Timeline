@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.erickson.timeline.model.livedata.ActiveViewLiveData
+import com.erickson.timeline.model.livedata.HighestTimeLiveData
+import com.erickson.timeline.model.livedata.LowestTimeLiveData
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
 import java.util.*
 import java.util.Collections.max
@@ -38,11 +41,9 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             }
         })
     }
-
     private var allViewData: MutableMap<String, ViewData> = mutableMapOf<String, ViewData>().also {
         getMoreData()
     }
-
     private fun nextActiveLiveDataIdFactory(): String? {
         allViewData.entries.mapNotNull {
             if (!usedIds.contains(it.key)) {
@@ -90,31 +91,8 @@ class DataViewModel : ViewModel(), TimelineDataModel {
     private val choiceOneActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
     private val choiceTwoActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
 
-    val lowestTime by lazy {
-        MediatorLiveData<Date>().apply {
-            fun getLowestDate(): Date? {
-                return min(timelineViewData.mapNotNull { it.value?.viewData?.date })
-            }
-            timelineViewData.forEach { timelineLiveData ->
-                addSource(timelineLiveData) {
-                    value = getLowestDate()
-                }
-            }
-        }
-    }
-    val highestTime by lazy {
-        MediatorLiveData<Date>().apply {
-            fun getHighestDate(): Date? {
-                return max(timelineViewData.mapNotNull { it.value?.viewData?.date })
-            }
-            timelineViewData.forEach { timelineLiveData ->
-                addSource(timelineLiveData) {
-                    value = getHighestDate()
-                }
-            }
-        }
-    }
-
+    val lowestTime by lazy { LowestTimeLiveData(timelineViewData) }
+    val highestTime by lazy { HighestTimeLiveData(timelineViewData) }
     val selectedIsHigher: Boolean
         get() {
             fun isSelected(check: ActiveViewLiveData): Boolean =

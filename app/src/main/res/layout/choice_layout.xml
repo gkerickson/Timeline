@@ -20,7 +20,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="TODO"
-        android:elevation="100dp"
         app:layout_constraintBottom_toTopOf="@+id/selection_two"
         app:layout_constraintEnd_toStartOf="@+id/main_guideline"
         app:layout_constraintStart_toStartOf="parent"

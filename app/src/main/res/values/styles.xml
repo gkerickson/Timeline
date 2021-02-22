@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TimelineImage">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="elevation">10dp</item>
+        <item name="elevationOverlayEnabled">true</item>
+        <item name="android:contentDescription">Timeline Artwork</item>
+    </style>
+</resources>
