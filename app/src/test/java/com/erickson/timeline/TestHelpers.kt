@@ -14,8 +14,7 @@ object TestHelpers {
         override val timelineViewData: List<LiveData<ActiveViewData>> = emptyList()
         override val choiceOneViewData: LiveData<ActiveViewData> = MutableLiveData()
         override val choiceTwoViewData: LiveData<ActiveViewData> = MutableLiveData()
-        override var selectedId: String = ""
-        override fun getSelected() : LiveData<ActiveViewData> = MutableLiveData()
+        override var selectedId: MutableLiveData<String> = MutableLiveData()
     }
 
     val mockResource =

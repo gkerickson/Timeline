@@ -13,16 +13,16 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
                 allViewData.putAll(data)
-                activeViewLiveData.forEach { liveData ->
-                    allViewData[nextActiveLiveDataFactory()]?.let { viewData ->
+                timelineViewData.forEach { liveData ->
+                    allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
                         Log.e("GALEN", "SETTING")
                         liveData.setValue(viewData)
                     }
                 }
-                allViewData[nextActiveLiveDataFactory()]?.let { viewData ->
+                allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
                     choiceOneActiveViewData.setValue(viewData)
                 }
-                allViewData[nextActiveLiveDataFactory()]?.let { viewData ->
+                allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
                     choiceTwoActiveViewData.setValue(viewData)
                 }
             }
@@ -30,7 +30,7 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         mutableMapOf()
     }
 
-    private fun nextActiveLiveDataFactory(): String? {
+    private fun nextActiveLiveDataIdFactory(): String? {
         allViewData.entries.forEach {
             if (!usedIds.contains(it.key)) {
                 usedIds.add(it.key)
@@ -40,15 +40,26 @@ class DataViewModel : ViewModel(), TimelineDataModel {
         return null
     }
 
+    fun updateChoices() {
+        val newData = listOf(choiceOneActiveViewData, choiceTwoActiveViewData, timelineViewData[1], timelineViewData[2]).sortedBy {
+            it.value!!.viewData.date
+        }.map{
+            it.value?.viewData
+        }
+        for(i in 0 until 4) {
+            newData[i]?.let { timelineViewData[i].setValue(it) }
+        }
+        allViewData[nextActiveLiveDataIdFactory()]?.let {
+            choiceOneActiveViewData.setValue(it)
+        }
+        allViewData[nextActiveLiveDataIdFactory()]?.let {
+            choiceTwoActiveViewData.setValue(it)
+        }
+    }
+
     private val usedIds = mutableListOf<String>()
     private val choiceOneActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
     private val choiceTwoActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
-    private val activeViewLiveData: List<ActiveViewLiveData> = listOf(
-        ActiveViewLiveData(RequestHandlerImpl),
-        ActiveViewLiveData(RequestHandlerImpl),
-        ActiveViewLiveData(RequestHandlerImpl),
-        ActiveViewLiveData(RequestHandlerImpl)
-    )
 
     val lowestTime by lazy {
         MediatorLiveData<Date>().apply {
@@ -65,7 +76,6 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             }
         }
     }
-
     val highestTime by lazy {
         MediatorLiveData<Date>().apply {
             timelineViewData.forEach { timelineLiveData ->
@@ -81,7 +91,6 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             }
         }
     }
-
     val shouldShowButton: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             addSource(selected) { selected ->
@@ -92,9 +101,13 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             }
         }
     }
-
     override val selectedId: MutableLiveData<String> = MutableLiveData("")
-    override val timelineViewData: List<LiveData<ActiveViewData>> = activeViewLiveData.map { it }
+    override val timelineViewData: List<ActiveViewLiveData> = listOf(
+        ActiveViewLiveData(RequestHandlerImpl),
+        ActiveViewLiveData(RequestHandlerImpl),
+        ActiveViewLiveData(RequestHandlerImpl),
+        ActiveViewLiveData(RequestHandlerImpl),
+    )
     override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
     override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
     override val selected: MediatorLiveData<ActiveViewData> by lazy {
