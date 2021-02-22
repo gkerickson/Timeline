@@ -9,7 +9,8 @@ import com.erickson.timeline.smithsonian.RequestHandlerImpl
 import java.util.*
 
 class DataViewModel : ViewModel(), TimelineDataModel {
-    private var allViewData: MutableMap<String, ViewData> = run {
+
+    private fun getMoreData() {
         RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
                 allViewData.putAll(data)
@@ -27,26 +28,45 @@ class DataViewModel : ViewModel(), TimelineDataModel {
                 }
             }
         })
-        mutableMapOf()
+    }
+
+    private var allViewData: MutableMap<String, ViewData> = mutableMapOf<String, ViewData>().also {
+        getMoreData()
     }
 
     private fun nextActiveLiveDataIdFactory(): String? {
-        allViewData.entries.forEach {
+        allViewData.entries.mapNotNull {
             if (!usedIds.contains(it.key)) {
-                usedIds.add(it.key)
-                return it.key
+                it.key
+            } else null
+        }.let { freshKeys ->
+            if (freshKeys.size < 10) {
+                RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
+                    override fun withData(data: Map<String, ViewData>) {
+                        allViewData.putAll(data)
+                    }
+                })
+            }
+            freshKeys.getOrNull(0)?.let {
+                usedIds.add(it)
+                return it
             }
         }
         return null
     }
 
     fun updateChoices() {
-        val newData = listOf(choiceOneActiveViewData, choiceTwoActiveViewData, timelineViewData[1], timelineViewData[2]).sortedBy {
+        val newData = listOf(
+            choiceOneActiveViewData,
+            choiceTwoActiveViewData,
+            timelineViewData[1],
+            timelineViewData[2]
+        ).sortedBy {
             it.value!!.viewData.date
-        }.map{
+        }.map {
             it.value?.viewData
         }
-        for(i in 0 until 4) {
+        for (i in 0 until 4) {
             newData[i]?.let { timelineViewData[i].setValue(it) }
         }
         allViewData[nextActiveLiveDataIdFactory()]?.let {

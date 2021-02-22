@@ -75,6 +75,7 @@ object RequestHandlerImpl : RequestHandler {
                 ) {
                     response.body()?.let {
                         withData(processSearchDataResponseBody(it))
+                        inProgress = false
                     }
                 }
             }
@@ -82,8 +83,14 @@ object RequestHandlerImpl : RequestHandler {
         abstract fun withData(data: Map<String, ViewData>)
     }
 
+    private var inProgress = false
+    private var start = 0
+
     override fun getData(callback: DataRequestCallback) {
-        smith.getIds().enqueue(callback.retrofitCallbackHandler)
+        if(inProgress) return
+        inProgress = true
+        smith.getIds(start = start).enqueue(callback.retrofitCallbackHandler)
+        start += 10
     }
 
     override fun loadImage(url: String, target: Target) {

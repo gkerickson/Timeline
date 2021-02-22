@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.DataViewModel
+import java.util.*
 
 class DetailViewFragment : Fragment() {
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -68,17 +69,14 @@ class DetailViewFragment : Fragment() {
         viewModel.shouldShowButton.observe(this.viewLifecycleOwner) {
             view.findViewById<Button>(R.id.confirm_button).visibility = if (it) VISIBLE else GONE
         }
-        Log.e("GALEN", "Creating view")
 
         view.findViewById<Button>(R.id.confirm_button).setOnClickListener {
             buttonOnPress()
         }
 
         if (savedInstanceState == null) {
-            Log.e("GALEN", "STATE WAS NULL")
             view?.findViewById<RecyclerView>(R.id.recycler_view)
                 ?.also { recyclerView ->
-                    Log.e("GALEN", "Preping recycler view")
                     recyclerView.layoutManager = LinearLayoutManager(context)
                     recyclerView.adapter = DetailsAdapter(viewModel.selected)
                 }
@@ -86,6 +84,13 @@ class DetailViewFragment : Fragment() {
             viewModel.selected.observe(this.viewLifecycleOwner) {
                 view.findViewById<ImageView>(R.id.detail_image).setImageBitmap(it.bitmap)
                 view?.findViewById<RecyclerView>(R.id.recycler_view)?.adapter?.notifyDataSetChanged()
+                view.findViewById<View>(R.id.include_date).apply {
+                    findViewById<TextView>(R.id.detail).text = Calendar.getInstance().run {
+                        time = it.viewData.date
+                        get(Calendar.YEAR).toString()
+                    }
+                    findViewById<TextView>(R.id.detail_label).text = "Date"
+                }
             }
         }
         return view
