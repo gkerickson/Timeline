@@ -28,6 +28,47 @@ class MainActivity : AppCompatActivity() {
         R.id.timeline_image_4,
     )
 
+    private val timelineImageViews: List<ImageView> by lazy {
+        imageIds.map { findViewById(it) }
+    }
+
+    private val choiceImageViews: List<ImageView> by lazy {
+        listOf(
+            findViewById(R.id.selection_one),
+            findViewById(R.id.selection_two)
+        )
+    }
+
+    private fun toTimelineFocus() {
+        findViewById<View>(R.id.timeline_layout).apply {
+            isClickable = false
+        }
+        timelineImageViews.forEach { it.isClickable = true }
+        choiceImageViews.forEach { it.isClickable = false }
+        findViewById<Guideline>(R.id.main_guideline).apply {
+            setGuidelinePercent(0.25F)
+        }
+        findViewById<View>(R.id.parent_layout).apply {
+            isClickable = true
+            invalidate()
+        }
+    }
+
+    private fun toChoiceFocus() {
+        findViewById<View>(R.id.timeline_layout).apply {
+            isClickable = true
+        }
+        timelineImageViews.forEach { it.isClickable = false }
+        choiceImageViews.forEach { it.isClickable = true }
+        findViewById<Guideline>(R.id.main_guideline).apply {
+            setGuidelinePercent(0.75F)
+        }
+        findViewById<View>(R.id.parent_layout).apply {
+            isClickable = false
+            invalidate()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,21 +98,8 @@ class MainActivity : AppCompatActivity() {
             }
         setupImageObserver(viewModel.choiceOneViewData, findViewById(R.id.selection_one))
         setupImageObserver(viewModel.choiceTwoViewData, findViewById(R.id.selection_two))
-
-        findViewById<View>(R.id.timeline_layout).setOnClickListener {
-            findViewById<Guideline>(R.id.main_guideline).apply {
-                setGuidelinePercent(0.25F)
-                rootView.invalidate()
-            }
-            it.isClickable = false
-        }
-
-        findViewById<View>(R.id.parent_layout).setOnClickListener {
-            findViewById<Guideline>(R.id.main_guideline).apply {
-                setGuidelinePercent(0.75F)
-                rootView.invalidate()
-            }
-            findViewById<View>(R.id.timeline_layout).isClickable = true
-        }
+        toChoiceFocus()
+        findViewById<View>(R.id.timeline_layout).setOnClickListener {  toTimelineFocus() }
+        findViewById<View>(R.id.parent_layout).setOnClickListener { toChoiceFocus() }
     }
 }
