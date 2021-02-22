@@ -1,12 +1,13 @@
 package com.erickson.timeline.model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
 import java.util.*
+import java.util.Collections.max
+import java.util.Collections.min
 
 class DataViewModel : ViewModel(), TimelineDataModel {
 
@@ -23,7 +24,7 @@ class DataViewModel : ViewModel(), TimelineDataModel {
                 ).sortedByDescending {
                     it?.date
                 }.apply {
-                    for(i in 0 until 4) {
+                    for (i in 0 until 4) {
                         this[i]?.let { timelineViewData[i].setValue(it) }
                     }
                 }
@@ -91,30 +92,24 @@ class DataViewModel : ViewModel(), TimelineDataModel {
 
     val lowestTime by lazy {
         MediatorLiveData<Date>().apply {
+            fun getLowestDate(): Date? {
+                return min(timelineViewData.mapNotNull { it.value?.viewData?.date })
+            }
             timelineViewData.forEach { timelineLiveData ->
                 addSource(timelineLiveData) {
-                    it.viewData.date.let { newDate ->
-                        this.value?.let { oldDate ->
-                            if (oldDate > newDate) this.value = newDate
-                        } ?: run {
-                            this.value = newDate
-                        }
-                    }
+                    value = getLowestDate()
                 }
             }
         }
     }
     val highestTime by lazy {
         MediatorLiveData<Date>().apply {
+            fun getHighestDate(): Date? {
+                return max(timelineViewData.mapNotNull { it.value?.viewData?.date })
+            }
             timelineViewData.forEach { timelineLiveData ->
                 addSource(timelineLiveData) {
-                    it.viewData.date.let { newDate ->
-                        this.value?.let { oldDate ->
-                            if (oldDate < newDate) this.value = newDate
-                        } ?: run {
-                            this.value = newDate
-                        }
-                    }
+                    value = getHighestDate()
                 }
             }
         }

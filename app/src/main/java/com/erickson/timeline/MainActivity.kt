@@ -118,15 +118,21 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.parent_layout).setOnClickListener { toChoiceFocus() }
 
         viewModel.highestTime.observe(this) {
-            findViewById<TextView>(R.id.topTime).text = Calendar.getInstance().run {
-                this.time = it
-                get(Calendar.YEAR).toString()
+            findViewById<TextView>(R.id.topTime).apply {
+                text = Calendar.getInstance().run {
+                    this.time = it
+                    get(Calendar.YEAR).toString()
+                }
+                invalidate()
             }
         }
         viewModel.lowestTime.observe(this) {
-            findViewById<TextView>(R.id.bottomTime).text = Calendar.getInstance().run {
-                this.time = it
-                get(Calendar.YEAR).toString()
+            findViewById<TextView>(R.id.bottomTime).apply {
+                text = Calendar.getInstance().run {
+                    this.time = it
+                    get(Calendar.YEAR).toString()
+                }
+                invalidate()
             }
         }
     }
