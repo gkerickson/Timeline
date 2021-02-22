@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.erickson.timeline.model.ActiveViewData
 
@@ -12,6 +13,15 @@ class DetailsAdapter(
     private val shouldHideDates: LiveData<Boolean>
 ) :
     RecyclerView.Adapter<DetailViewFragment.NoteViewHolder>() {
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.findViewTreeLifecycleOwner()?.let {
+            shouldHideDates.observe(it) {
+                this.notifyDataSetChanged()
+            }
+        }
+        super.onAttachedToRecyclerView(recyclerView)
+    }
 
     private fun hideDates(input: String): String {
         return Regex("\\d").replace(String(input.toCharArray()), "*")

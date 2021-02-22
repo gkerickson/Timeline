@@ -119,14 +119,28 @@ class DataViewModel : ViewModel(), TimelineDataModel {
             }
         }
     }
+
+    val selectedIsHigher: Boolean
+        get() {
+            fun isSelected(check: ActiveViewLiveData): Boolean =
+                check.value?.viewData?.id?.let {
+                    it.isNotEmpty() && it == selected.value?.viewData?.id
+                } ?: false
+
+            return (isSelected(choiceOneActiveViewData) && choiceOneActiveViewData > choiceTwoActiveViewData) ||
+                    (isSelected(choiceTwoActiveViewData) && choiceOneActiveViewData < choiceTwoActiveViewData)
+        }
     val shouldShowButton: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
-            addSource(selected) { selected ->
-                value = selected.viewData.id.run {
+            fun update() {
+                value = selected.value?.viewData?.id?.run {
                     (this == choiceOneActiveViewData.value?.viewData?.id ||
                             this == choiceTwoActiveViewData.value?.viewData?.id)
-                }
+                } ?: false
             }
+            addSource(selected) { update() }
+            addSource(choiceOneActiveViewData) { update() }
+            addSource(choiceTwoActiveViewData) { update() }
         }
     }
     override val selectedId: MutableLiveData<String> = MutableLiveData("")
