@@ -6,9 +6,9 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
-import kotlin.math.abs
 import androidx.core.view.setPadding
 import com.erickson.timeline.MainActivity.Companion.imageIds
+import kotlin.math.abs
 
 class AnimationDelegate(
     private val activity: MainActivity

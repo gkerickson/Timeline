@@ -67,7 +67,7 @@ class DetailViewFragment : Fragment() {
                         time = it.viewData.date
                         get(Calendar.YEAR).toString()
                     }
-                    findViewById<TextView>(R.id.detail_label).text = "Date"
+                    findViewById<TextView>(R.id.detail_label).text = context.getString(R.string.date_label)
                     invalidate()
                 }
             }

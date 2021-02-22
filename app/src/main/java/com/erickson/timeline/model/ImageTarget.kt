@@ -12,16 +12,12 @@ class ImageTarget(private val callback: NotifyObserversCallback) : Target {
     }
 
     override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-        Log.e("GALEN", "LOADING SUCCESS!")
         callback.setBitmap(bitmap)
     }
 
     override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-        Log.e("GALEN", "LOADING FAILED!")
-        TODO("Not yet implemented")
+        Log.e("ImageTarget", "LOADING FAILED!")
     }
 
-    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-        Log.e("GALEN", "LOADING SETUP!")
-    }
+    override fun onPrepareLoad(placeHoldserDrawable: Drawable?) {}
 }

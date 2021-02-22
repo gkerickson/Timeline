@@ -1,6 +1,5 @@
 package com.erickson.timeline.smithsonian
 
-import android.annotation.SuppressLint
 import android.util.Log
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.RequestConstants.TARGET_URL
@@ -29,7 +28,6 @@ object RequestHandlerImpl : RequestHandler {
             .build().create(Smithsonian::class.java)
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun parseDate(date: String): Date? {
         var toParse = date
         if (date[date.length - 1] == 's') toParse = date.substring(0, date.length - 1)
@@ -66,7 +64,7 @@ object RequestHandlerImpl : RequestHandler {
                     call: Call<RequestDefinitions.Body<RequestDefinitions.SearchData>>,
                     t: Throwable
                 ) {
-                    TODO("Not yet implemented")
+                    Log.e("RetrofitCallback", "FAILURE with ${t.stackTrace}")
                 }
 
                 override fun onResponse(
@@ -87,14 +85,13 @@ object RequestHandlerImpl : RequestHandler {
     private var start = 0
 
     override fun getData(callback: DataRequestCallback) {
-        if(inProgress) return
+        if (inProgress) return
         inProgress = true
         smith.getIds(start = start).enqueue(callback.retrofitCallbackHandler)
         start += 10
     }
 
     override fun loadImage(url: String, target: Target) {
-        Log.e("GALEN", "LOADING $url")
         Picasso.get().load(url).into(target)
     }
 }

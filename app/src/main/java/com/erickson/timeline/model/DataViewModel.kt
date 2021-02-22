@@ -13,7 +13,6 @@ import java.util.Collections.max
 import java.util.Collections.min
 
 class DataViewModel : ViewModel(), TimelineDataModel {
-
     private fun getMoreData() {
         RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {

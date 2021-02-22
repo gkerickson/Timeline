@@ -1,6 +1,5 @@
 package com.erickson.timeline
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData

@@ -18,12 +18,11 @@ class ChoiceDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         return activity?.let { fragmentActivity ->
             val builder = AlertDialog.Builder(fragmentActivity)
             builder.setMessage(
-                if (viewModel.selectedIsHigher) "CORRECT! CONGRATS"
-                else "INCORRECT! Take a look in the timeline to see where things went wrong"
+                if (viewModel.selectedIsHigher) getString(R.string.message_correct)
+                else getString(R.string.message_incorrect)
             )
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

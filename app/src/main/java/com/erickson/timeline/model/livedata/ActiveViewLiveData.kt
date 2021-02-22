@@ -1,7 +1,6 @@
 package com.erickson.timeline.model.livedata
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.ImageTarget

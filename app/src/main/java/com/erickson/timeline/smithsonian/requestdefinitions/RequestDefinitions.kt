@@ -64,23 +64,4 @@ object RequestDefinitions {
         SCREEN("Screen Image"),
         THUMBNAIL("Thumbnail Image")
     }
-//
-//    interface Art {
-//        val id: String
-//    }
-//
-//    enum class Category(val category: String) {
-//        CULTURE("culture"),
-//        DATA_SOURCE("data_source"),
-//        DATE("date"),
-//        OBJECT_TYPE("object_type"),
-//        ONLINE_MEDIA_TYPE("online_media_type"),
-//        PLACE("place"),
-//        TOPIC("topic"),
-//        UNIT_CODE("unit_code"),
-//    }
-//
-//    enum class Terms(val term: String) {
-//        IMAGES("Images")
-//    }
 }
