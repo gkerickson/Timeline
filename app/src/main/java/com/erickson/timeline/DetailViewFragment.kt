@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -26,6 +29,10 @@ class DetailViewFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.activity_detail_view, container, false)
         val viewModel: DataViewModel by activityViewModels()
+
+        viewModel.shouldShowButton.observe(this.viewLifecycleOwner) {
+            view.findViewById<Button>(R.id.confirm_button).visibility = if(it) VISIBLE else GONE
+        }
         Log.e("GALEN", "Creating view")
 
         if (savedInstanceState == null) {
