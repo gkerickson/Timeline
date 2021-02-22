@@ -59,4 +59,9 @@ class ApiDefinitionTest {
         assert(imageUrl.isNotEmpty())
         assertNotNull(response)
     }
+
+    @Test
+    fun testGetSomethingWithNotes() {
+        smith.get
+    }
 }

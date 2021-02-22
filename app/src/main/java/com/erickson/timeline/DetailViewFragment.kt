@@ -1,9 +1,11 @@
 package com.erickson.timeline
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,16 +26,21 @@ class DetailViewFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.activity_detail_view, container, false)
         val viewModel: DataViewModel by activityViewModels()
+        val selected = viewModel.getSelected()
+        Log.e("GALEN", "Creating view")
 
         if (savedInstanceState == null) {
-            container?.findViewById<RecyclerView>(R.id.recycler_view)
+            Log.e("GALEN", "STATE WAS NULL")
+            view?.findViewById<RecyclerView>(R.id.recycler_view)
                 ?.also { recyclerView ->
+                    Log.e("GALEN", "Preping recycler view")
                     recyclerView.layoutManager = LinearLayoutManager(context)
-                    recyclerView.adapter = DetailsAdapter(viewModel)
+                    recyclerView.adapter = DetailsAdapter(selected)
                 }
 
-            viewModel.getSelected().observe(this.viewLifecycleOwner) {
-                container?.findViewById<RecyclerView>(R.id.recycler_view)?.adapter?.notifyDataSetChanged()
+            selected.observe(this.viewLifecycleOwner) {
+                view.findViewById<ImageView>(R.id.detail_image).setImageBitmap(it.imageTarget)
+                view?.findViewById<RecyclerView>(R.id.recycler_view)?.adapter?.notifyDataSetChanged()
             }
         }
         return view

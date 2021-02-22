@@ -49,9 +49,11 @@ class DataViewModel : ViewModel(), TimelineDataModel {
     )
 
     override fun getSelected(): LiveData<ActiveViewData> {
+        Log.e("GALEN", "GETTING SELECTED")
+
         timelineViewData.forEach { timelineLiveData ->
             if (timelineLiveData.value?.viewData?.id == selectedId)
-                return timelineLiveData
+                return@getSelected timelineLiveData
         }
 
         if(choiceOneViewData.value?.viewData?.id == selectedId)

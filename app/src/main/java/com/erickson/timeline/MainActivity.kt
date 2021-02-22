@@ -1,6 +1,5 @@
 package com.erickson.timeline
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,14 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Guideline
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.DataViewModel
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
-
-    private fun onImageClick(listIndex: Int) {
+    private fun onImageClick() {
         this.supportFragmentManager.beginTransaction()
             .setReorderingAllowed(true)
             .addToBackStack(null)
@@ -45,6 +42,13 @@ class MainActivity : AppCompatActivity() {
                 view.setImageBitmap(it.imageTarget)
                 view.rootView.invalidate()
             }
+            view.isClickable = true
+            view.setOnClickListener {
+                liveData.value?.viewData?.id?.apply {
+                    viewModel.selectedId = this
+                }
+                onImageClick()
+            }
         }
 
         for (i in 0 until 4)
@@ -59,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 setGuidelinePercent(0.25F)
                 rootView.invalidate()
             }
+            it.isClickable = false
         }
 
         findViewById<View>(R.id.parent_layout).setOnClickListener {
@@ -66,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 setGuidelinePercent(0.75F)
                 rootView.invalidate()
             }
+            findViewById<View>(R.id.timeline_layout).isClickable = true
         }
     }
 }
