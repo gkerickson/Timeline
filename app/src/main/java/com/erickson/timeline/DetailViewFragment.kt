@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,10 @@ class DetailViewFragment : Fragment() {
 
         view.findViewById<Button>(R.id.confirm_button).setOnClickListener {
             ChoiceDialogFragment().show(parentFragmentManager, null)
+        }
+
+        view.findViewById<Toolbar>(R.id.toolbar_back).setOnClickListener {
+            activity?.onBackPressed()
         }
 
         if (savedInstanceState == null) {

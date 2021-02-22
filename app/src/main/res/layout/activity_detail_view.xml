@@ -7,6 +7,20 @@
     android:background="#FFFFFF"
     tools:context=".DetailViewFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="10dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/abc_vector_test"
+        app:title="@string/app_name" />
+
     <ImageView
         android:id="@+id/detail_image"
         android:layout_width="0dp"
@@ -15,7 +29,7 @@
         android:minHeight="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_back"
         tools:srcCompat="@tools:sample/avatars" />
 
     <include
