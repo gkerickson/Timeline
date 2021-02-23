@@ -8,11 +8,13 @@ import com.erickson.timeline.model.livedata.ActiveViewLiveData
 import com.erickson.timeline.model.livedata.HighestTimeLiveData
 import com.erickson.timeline.model.livedata.LowestTimeLiveData
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
-import java.util.*
-import java.util.Collections.max
-import java.util.Collections.min
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DataViewModel : ViewModel(), TimelineDataModel {
+@HiltViewModel
+class DataViewModel @Inject constructor(
+
+) : ViewModel(), TimelineDataModel {
     private fun getMoreData() {
         RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
