@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.erickson.timeline.model.helpers.SmithsonianDataManager
+import com.erickson.timeline.model.helpers.TimelineDataModel
 import com.erickson.timeline.model.livedata.ActiveViewLiveData
 import com.erickson.timeline.model.livedata.HighestTimeLiveData
 import com.erickson.timeline.model.livedata.LowestTimeLiveData
@@ -18,57 +20,33 @@ class DataViewModel @Inject constructor(
     override val timelineViewData: List<ActiveViewLiveData>
 ) : ViewModel(), TimelineDataModel {
 
-    private fun getMoreData() {
-        RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
-            override fun withData(data: Map<String, ViewData>) {
-                allViewData.putAll(data)
-
-                listOf(
-                    allViewData[nextActiveLiveDataIdFactory()],
-                    allViewData[nextActiveLiveDataIdFactory()],
-                    allViewData[nextActiveLiveDataIdFactory()],
-                    allViewData[nextActiveLiveDataIdFactory()]
-                ).sortedByDescending {
-                    it?.date
-                }.apply {
-                    for (i in 0 until 4) {
-                        this[i]?.let { timelineViewData[i].setValue(it) }
-                    }
-                }
-
-                allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
-                    choiceOneActiveViewData.setValue(viewData)
-                }
-                allViewData[nextActiveLiveDataIdFactory()]?.let { viewData ->
-                    choiceTwoActiveViewData.setValue(viewData)
-                }
+    private val manager = SmithsonianDataManager(
+        object : SmithsonianDataManager.SetupCallback {
+            override fun onSetupComplete() {
+                setupViewModel()
             }
         })
-    }
 
-    private var allViewData: MutableMap<String, ViewData> = mutableMapOf<String, ViewData>().also {
-        getMoreData()
-    }
-
-    private fun nextActiveLiveDataIdFactory(): String? {
-        allViewData.entries.mapNotNull {
-            if (!usedIds.contains(it.key)) {
-                it.key
-            } else null
-        }.let { freshKeys ->
-            if (freshKeys.size < 10) {
-                RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
-                    override fun withData(data: Map<String, ViewData>) {
-                        allViewData.putAll(data)
-                    }
-                })
-            }
-            freshKeys.getOrNull(0)?.let {
-                usedIds.add(it)
-                return it
+    private fun setupViewModel() {
+        listOf(
+            manager.getNextViewData(),
+            manager.getNextViewData(),
+            manager.getNextViewData(),
+            manager.getNextViewData()
+        ).sortedByDescending {
+            it?.date
+        }.apply {
+            for (i in 0 until 4) {
+                this[i]?.let { timelineViewData[i].setValue(it) }
             }
         }
-        return null
+
+        manager.getNextViewData()?.let { viewData ->
+            choiceOneActiveViewData.setValue(viewData)
+        }
+        manager.getNextViewData()?.let { viewData ->
+            choiceTwoActiveViewData.setValue(viewData)
+        }
     }
 
     fun updateChoices() {
@@ -78,22 +56,21 @@ class DataViewModel @Inject constructor(
             timelineViewData[1],
             timelineViewData[2]
         ).sortedByDescending {
-            it.value!!.viewData.date
+            it.value?.viewData?.date
         }.map {
             it.value?.viewData
         }
         for (i in 0 until 4) {
             newData[i]?.let { timelineViewData[i].setValue(it) }
         }
-        allViewData[nextActiveLiveDataIdFactory()]?.let {
+        manager.getNextViewData()?.let {
             choiceOneActiveViewData.setValue(it)
         }
-        allViewData[nextActiveLiveDataIdFactory()]?.let {
+        manager.getNextViewData()?.let {
             choiceTwoActiveViewData.setValue(it)
         }
     }
 
-    private val usedIds = mutableListOf<String>()
     private val choiceOneActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
     private val choiceTwoActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
 
@@ -107,6 +84,7 @@ class DataViewModel @Inject constructor(
             return (isSelected(choiceOneActiveViewData) && choiceOneActiveViewData > choiceTwoActiveViewData) ||
                     (isSelected(choiceTwoActiveViewData) && choiceOneActiveViewData < choiceTwoActiveViewData)
         }
+
     val shouldShowButton: MediatorLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             fun update() {
@@ -120,8 +98,8 @@ class DataViewModel @Inject constructor(
             addSource(choiceTwoActiveViewData) { update() }
         }
     }
-    override val selectedId: MutableLiveData<String> = MutableLiveData("")
 
+    override val selectedId: MutableLiveData<String> = MutableLiveData("")
     override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
     override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
     override val selected: MediatorLiveData<ActiveViewData> by lazy {

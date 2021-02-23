@@ -3,7 +3,7 @@ package com.erickson.timeline.model.livedata
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.erickson.timeline.model.ActiveViewData
-import com.erickson.timeline.model.ImageTarget
+import com.erickson.timeline.model.helpers.ImageTarget
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.RequestHandler
 

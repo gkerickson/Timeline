@@ -1,4 +1,4 @@
-package com.erickson.timeline.model
+package com.erickson.timeline.model.helpers
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
