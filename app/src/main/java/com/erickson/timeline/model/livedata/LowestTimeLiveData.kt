@@ -4,12 +4,11 @@ import androidx.lifecycle.MediatorLiveData
 import java.util.*
 
 class LowestTimeLiveData(private val timelineViewData: List<ActiveViewLiveData>) : MediatorLiveData<Date>() {
-    override fun onActive() {
+    init {
         timelineViewData.forEach { timelineLiveData ->
             addSource(timelineLiveData) {
                 value = Collections.min(timelineViewData.mapNotNull { it.value?.viewData?.date })
             }
         }
-        super.onActive()
     }
 }
