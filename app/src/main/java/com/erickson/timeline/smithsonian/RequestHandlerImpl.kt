@@ -37,7 +37,7 @@ object RequestHandlerImpl : RequestHandler {
     fun processSearchDataResponseBody(body: RequestDefinitions.Body<RequestDefinitions.SearchData>): Map<String, ViewData> {
         return body.response.rows.mapNotNull { response ->
             response.content.run {
-                val date = this.indexedStructured.date.getOrNull(0)?.let { parseDate(it) }
+                val date = this.indexedStructured.date?.getOrNull(0)?.let { parseDate(it) }
                 val notes: MutableList<RequestDefinitions.SearchData.ContentBody.FreeText.Note> =
                     mutableListOf()
                 freetext?.name?.let { notes.addAll(it) }

@@ -40,7 +40,7 @@ object RequestDefinitions {
                 }
             }
             data class Structured(
-                val date: List<String>,
+                val date: List<String>?,
                 val object_type: List<String>,
                 val name: List<String>,
                 val topic: List<String>,
