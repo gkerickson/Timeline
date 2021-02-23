@@ -1,6 +1,7 @@
 package com.erickson.timeline.model
 
 import android.graphics.Bitmap
+import com.erickson.timeline.model.livedata.ActiveViewLiveData
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import java.util.*
 

@@ -13,8 +13,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
-
+    val lowestTime: LowestTimeLiveData,
+    val highestTime: HighestTimeLiveData,
+    override val timelineViewData: List<ActiveViewLiveData>
 ) : ViewModel(), TimelineDataModel {
+
     private fun getMoreData() {
         RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
@@ -42,9 +45,11 @@ class DataViewModel @Inject constructor(
             }
         })
     }
+
     private var allViewData: MutableMap<String, ViewData> = mutableMapOf<String, ViewData>().also {
         getMoreData()
     }
+
     private fun nextActiveLiveDataIdFactory(): String? {
         allViewData.entries.mapNotNull {
             if (!usedIds.contains(it.key)) {
@@ -92,8 +97,6 @@ class DataViewModel @Inject constructor(
     private val choiceOneActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
     private val choiceTwoActiveViewData = ActiveViewLiveData(RequestHandlerImpl)
 
-    val lowestTime by lazy { LowestTimeLiveData(timelineViewData) }
-    val highestTime by lazy { HighestTimeLiveData(timelineViewData) }
     val selectedIsHigher: Boolean
         get() {
             fun isSelected(check: ActiveViewLiveData): Boolean =
@@ -118,12 +121,7 @@ class DataViewModel @Inject constructor(
         }
     }
     override val selectedId: MutableLiveData<String> = MutableLiveData("")
-    override val timelineViewData: List<ActiveViewLiveData> = listOf(
-        ActiveViewLiveData(RequestHandlerImpl),
-        ActiveViewLiveData(RequestHandlerImpl),
-        ActiveViewLiveData(RequestHandlerImpl),
-        ActiveViewLiveData(RequestHandlerImpl),
-    )
+
     override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
     override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
     override val selected: MediatorLiveData<ActiveViewData> by lazy {
