@@ -3,14 +3,20 @@ package com.erickson.timeline.model.helpers
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.DataRequestCallback
 import com.erickson.timeline.smithsonian.RequestHandler
-import com.erickson.timeline.smithsonian.RequestHandlerImpl
+import javax.inject.Inject
 
-class SmithsonianDataManager(
-    private val setupCallback: SetupCallback,
+class SmithsonianDataManager @Inject constructor(
     private val requestHandler: RequestHandler
 ) {
     interface SetupCallback {
-        fun onSetupComplete()
+        fun onReady()
+    }
+
+    private var dataManagerReadyCallback: SetupCallback? = null
+
+    fun setupDataManagerReadyCallback(allViewDataCallback: SetupCallback) {
+        this.dataManagerReadyCallback = allViewDataCallback
+        if (allViewData.isNotEmpty()) allViewDataCallback.onReady()
     }
 
     fun getNextViewData(): ViewData {
@@ -21,7 +27,7 @@ class SmithsonianDataManager(
         requestHandler.getData(object : DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
                 it.putAll(data)
-                setupCallback.onSetupComplete()
+                dataManagerReadyCallback?.onReady()
             }
         })
     }

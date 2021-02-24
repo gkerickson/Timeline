@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.erickson.timeline.model.helpers.SmithsonianDataManager
 import com.erickson.timeline.model.livedata.*
-import com.erickson.timeline.smithsonian.RequestHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,19 +17,20 @@ class DataViewModel @Inject constructor(
     val selectedId: MutableLiveData<String>,
     @ChoiceOneActiveViewLiveData private val choiceOneActiveViewData: ActiveViewLiveData,
     @ChoiceTwoActiveViewLiveData private val choiceTwoActiveViewData: ActiveViewLiveData,
-    requestHandler: RequestHandler
+    private val manager: SmithsonianDataManager
 ) : ViewModel() {
-    val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
-    val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
-    val shouldShowButton = ShouldShowButtonLiveData(selected, choiceOneViewData, choiceTwoViewData)
-
-    private val manager = SmithsonianDataManager(
-        object : SmithsonianDataManager.SetupCallback {
-            override fun onSetupComplete() {
+    init {
+        manager.setupDataManagerReadyCallback(object : SmithsonianDataManager.SetupCallback {
+            override fun onReady() {
                 setupViewModel()
             }
-        }, requestHandler
-    )
+        })
+    }
+
+    val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
+    val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
+    val shouldShowButton: LiveData<Boolean> =
+        ShouldShowButtonLiveData(selected, choiceOneViewData, choiceTwoViewData)
 
     private fun updateViewData(timelineList: List<ViewData>) {
         timelineList.sortedByDescending {
