@@ -57,36 +57,9 @@ object RequestHandlerImpl : RequestHandler {
         }.associateBy { it.id }
     }
 
-    abstract class DataRequestCallback {
-        val retrofitCallbackHandler =
-            object : Callback<RequestDefinitions.Body<RequestDefinitions.SearchData>> {
-                override fun onFailure(
-                    call: Call<RequestDefinitions.Body<RequestDefinitions.SearchData>>,
-                    t: Throwable
-                ) {
-                    Log.e("RetrofitCallback", "FAILURE with ${t.stackTrace}")
-                }
-
-                override fun onResponse(
-                    call: Call<RequestDefinitions.Body<RequestDefinitions.SearchData>>,
-                    response: Response<RequestDefinitions.Body<RequestDefinitions.SearchData>>
-                ) {
-                    response.body()?.let {
-                        withData(processSearchDataResponseBody(it))
-                        inProgress = false
-                    }
-                }
-            }
-
-        abstract fun withData(data: Map<String, ViewData>)
-    }
-
-    private var inProgress = false
     private var start = 0
 
     override fun getData(callback: DataRequestCallback) {
-        if (inProgress) return
-        inProgress = true
         smith.getIds(start = start).enqueue(callback.retrofitCallbackHandler)
         start += 10
     }

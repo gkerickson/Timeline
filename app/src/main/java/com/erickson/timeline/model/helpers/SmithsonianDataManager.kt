@@ -1,21 +1,24 @@
 package com.erickson.timeline.model.helpers
 
 import com.erickson.timeline.model.ViewData
+import com.erickson.timeline.smithsonian.DataRequestCallback
+import com.erickson.timeline.smithsonian.RequestHandler
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
 
 class SmithsonianDataManager(
-    private val setupCallback: SetupCallback
+    private val setupCallback: SetupCallback,
+    private val requestHandler: RequestHandler
 ) {
     interface SetupCallback {
         fun onSetupComplete()
     }
 
-    fun getNextViewData(): ViewData? {
-        return allViewData[nextActiveLiveDataIdFactory()]
+    fun getNextViewData(): ViewData {
+        return allViewData[nextActiveLiveDataIdFactory()]!!
     }
 
     private var allViewData: MutableMap<String, ViewData> = mutableMapOf<String, ViewData>().also {
-        RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
+        requestHandler.getData(object : DataRequestCallback() {
             override fun withData(data: Map<String, ViewData>) {
                 it.putAll(data)
                 setupCallback.onSetupComplete()
@@ -32,7 +35,7 @@ class SmithsonianDataManager(
             } else null
         }.let { freshKeys ->
             if (freshKeys.size < 10) {
-                RequestHandlerImpl.getData(object : RequestHandlerImpl.DataRequestCallback() {
+                requestHandler.getData(object : DataRequestCallback() {
                     override fun withData(data: Map<String, ViewData>) {
                         allViewData.putAll(data)
                     }

@@ -10,5 +10,5 @@ interface TimelineDataModel {
     val choiceOneViewData: LiveData<ActiveViewData>
     val choiceTwoViewData: LiveData<ActiveViewData>
     val selectedId: MutableLiveData<String>
-    val selected: MediatorLiveData<ActiveViewData>
+    val selected: MutableLiveData<ActiveViewData>
 }
