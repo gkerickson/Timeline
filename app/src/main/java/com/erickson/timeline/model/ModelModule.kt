@@ -1,5 +1,6 @@
 package com.erickson.timeline.model
 
+import androidx.lifecycle.MutableLiveData
 import com.erickson.timeline.model.livedata.ActiveViewLiveData
 import com.erickson.timeline.smithsonian.RequestHandler
 import com.erickson.timeline.smithsonian.RequestHandlerImpl
@@ -12,6 +13,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 class ModelModule {
+
+    @Provides
+    @ViewModelScoped
+    fun provideSelectedIdLiveData(): MutableLiveData<String> = MutableLiveData("")
+
     @Provides
     @ViewModelScoped
     fun provideRequestHandler(): RequestHandler = RequestHandlerImpl

@@ -3,7 +3,6 @@ package com.erickson.timeline
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.erickson.timeline.model.ActiveViewData
-import com.erickson.timeline.model.helpers.TimelineDataModel
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions
 import java.util.*

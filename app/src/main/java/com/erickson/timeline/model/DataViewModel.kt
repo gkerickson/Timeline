@@ -1,34 +1,36 @@
 package com.erickson.timeline.model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.erickson.timeline.model.helpers.SmithsonianDataManager
-import com.erickson.timeline.model.helpers.TimelineDataModel
-import com.erickson.timeline.model.livedata.ActiveViewLiveData
-import com.erickson.timeline.model.livedata.HighestTimeLiveData
-import com.erickson.timeline.model.livedata.LowestTimeLiveData
+import com.erickson.timeline.model.livedata.*
 import com.erickson.timeline.smithsonian.RequestHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
+    val selected: SelectedLiveData,
     val lowestTime: LowestTimeLiveData,
     val highestTime: HighestTimeLiveData,
-    override val timelineViewData: List<ActiveViewLiveData>,
+    val timelineViewData: List<ActiveViewLiveData>,
+    val selectedId: MutableLiveData<String>,
     @ChoiceOneActiveViewLiveData private val choiceOneActiveViewData: ActiveViewLiveData,
     @ChoiceTwoActiveViewLiveData private val choiceTwoActiveViewData: ActiveViewLiveData,
     requestHandler: RequestHandler
-) : ViewModel(), TimelineDataModel {
+) : ViewModel() {
+    val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
+    val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
+    val shouldShowButton = ShouldShowButtonLiveData(selected, choiceOneViewData, choiceTwoViewData)
 
     private val manager = SmithsonianDataManager(
         object : SmithsonianDataManager.SetupCallback {
             override fun onSetupComplete() {
                 setupViewModel()
             }
-        }, requestHandler)
+        }, requestHandler
+    )
 
     private fun updateViewData(timelineList: List<ViewData>) {
         timelineList.sortedByDescending {
@@ -78,38 +80,4 @@ class DataViewModel @Inject constructor(
             return (isSelected(choiceOneActiveViewData) && choiceOneActiveViewData > choiceTwoActiveViewData) ||
                     (isSelected(choiceTwoActiveViewData) && choiceOneActiveViewData < choiceTwoActiveViewData)
         }
-
-    val shouldShowButton: MediatorLiveData<Boolean> by lazy {
-        MediatorLiveData<Boolean>().apply {
-            fun update() {
-                value = selected.value?.viewData?.id?.run {
-                    (this == choiceOneActiveViewData.value?.viewData?.id ||
-                            this == choiceTwoActiveViewData.value?.viewData?.id)
-                } ?: false
-            }
-            addSource(selected) { update() }
-            addSource(choiceOneActiveViewData) { update() }
-            addSource(choiceTwoActiveViewData) { update() }
-        }
-    }
-
-    override val selectedId: MutableLiveData<String> = MutableLiveData("")
-    override val choiceOneViewData: LiveData<ActiveViewData> = choiceOneActiveViewData
-    override val choiceTwoViewData: LiveData<ActiveViewData> = choiceTwoActiveViewData
-    override val selected: MutableLiveData<ActiveViewData> by lazy {
-        MediatorLiveData<ActiveViewData>().apply {
-            addSource(selectedId) { id ->
-                timelineViewData.forEach { timelineLiveData ->
-                    if (timelineLiveData.value?.viewData?.id == id)
-                        value = timelineLiveData.value
-                }
-
-                if (choiceOneViewData.value?.viewData?.id == id)
-                    value = choiceOneViewData.value
-
-                if (choiceTwoViewData.value?.viewData?.id == id)
-                    value = choiceTwoActiveViewData.value
-            }
-        }
-    }
 }
