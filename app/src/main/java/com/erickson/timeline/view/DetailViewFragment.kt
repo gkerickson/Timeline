@@ -1,4 +1,4 @@
-package com.erickson.timeline
+package com.erickson.timeline.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.erickson.timeline.R
 import com.erickson.timeline.model.DataViewModel
 import java.util.*
 

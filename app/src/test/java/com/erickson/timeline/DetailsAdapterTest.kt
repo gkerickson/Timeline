@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.erickson.timeline.model.ActiveViewData
 import com.erickson.timeline.model.ViewData
 import com.erickson.timeline.smithsonian.requestdefinitions.RequestDefinitions.SearchData.ContentBody.FreeText.Note
+import com.erickson.timeline.view.DetailViewFragment
+import com.erickson.timeline.view.DetailsAdapter
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever

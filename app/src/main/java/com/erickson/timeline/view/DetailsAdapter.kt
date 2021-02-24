@@ -1,10 +1,11 @@
-package com.erickson.timeline
+package com.erickson.timeline.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.erickson.timeline.R
 import com.erickson.timeline.model.ActiveViewData
 
 class DetailsAdapter(

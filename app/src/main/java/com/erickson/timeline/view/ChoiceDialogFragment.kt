@@ -1,4 +1,4 @@
-package com.erickson.timeline
+package com.erickson.timeline.view
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.erickson.timeline.R
 import com.erickson.timeline.model.DataViewModel
 
 class ChoiceDialogFragment : DialogFragment() {

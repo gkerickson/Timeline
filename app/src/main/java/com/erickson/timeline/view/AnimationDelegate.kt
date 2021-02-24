@@ -1,4 +1,4 @@
-package com.erickson.timeline
+package com.erickson.timeline.view
 
 import android.animation.ValueAnimator
 import android.view.View
@@ -7,7 +7,9 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.view.setPadding
+import com.erickson.timeline.MainActivity
 import com.erickson.timeline.MainActivity.Companion.imageIds
+import com.erickson.timeline.R
 import kotlin.math.abs
 
 class AnimationDelegate(
